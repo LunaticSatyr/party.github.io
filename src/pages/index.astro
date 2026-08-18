@@ -1,0 +1,259 @@
+---
+import BrandMarquee from "../components/BrandMarquee.astro";
+import ClosingCta from "../components/ClosingCta.astro";
+import HomeHero from "../components/HomeHero.astro";
+import HowItWorks from "../components/HowItWorks.astro";
+import InstagramGallery from "../components/InstagramGallery.astro";
+import LocationGallery from "../components/LocationGallery.astro";
+import ServiceCard from "../components/ServiceCard.astro";
+import Testimonials from "../components/Testimonials.astro";
+import BaseLayout from "../layouts/BaseLayout.astro";
+
+const pageTitle = "PartiStaff | Event Talent, Models & VIP Experiences";
+const pageDescription =
+  "Book curated hosts, DJs, performers, event staff, boats, villas, and private party experiences.";
+
+const heroItems = [
+  {
+    src: "/images/events/event-07.jpg",
+    alt: "Friends enjoying a sunny yacht party",
+  },
+  {
+    src: "/images/events/event-08.jpg",
+    alt: "A DJ playing to a packed nightclub",
+  },
+  {
+    src: "/images/events/event-03.jpg",
+    alt: "Friends celebrating together on a dance floor",
+  },
+  {
+    src: "/images/events/event-10.jpg",
+    alt: "Guests raising a toast beneath warm lights",
+  },
+  {
+    src: "/images/events/event-01.jpg",
+    alt: "A concert crowd beneath vivid stage lights",
+  },
+  {
+    src: "/images/events/event-12.jpg",
+    alt: "A nighttime festival crowd under confetti",
+  },
+] as const;
+
+const services = [
+  {
+    title: "Buck’s Parties",
+    image: "/images/events/event-03.jpg",
+    alt: "Friends celebrating at a party",
+    cta: "See who’s available",
+    color: "#ee2b66",
+    imagePosition: "65% center",
+  },
+  {
+    title: "Boat Hire",
+    image: "/images/events/event-07.jpg",
+    alt: "A yacht party on clear blue water",
+    cta: "See available yachts",
+    color: "#3cb0e5",
+    imagePosition: "center",
+  },
+  {
+    title: "DJs",
+    image: "/images/events/event-08.jpg",
+    alt: "A DJ performing in a nightclub",
+    cta: "See who’s available",
+    color: "#004391",
+    imagePosition: "65% center",
+  },
+  {
+    title: "Hen’s Party",
+    image: "/images/events/event-10.jpg",
+    alt: "Guests sharing a celebratory toast",
+    cta: "See who’s available",
+    color: "#ba8792",
+    imagePosition: "65% center",
+  },
+  {
+    title: "Promo Staff",
+    image: "/images/events/event-09.jpg",
+    alt: "An event venue prepared for guests",
+    cta: "See who’s available",
+    color: "#241f1f",
+    imagePosition: "center",
+  },
+  {
+    title: "PartiHost",
+    image: "/images/events/event-11.jpg",
+    alt: "A host welcoming a lively event crowd",
+    cta: "See who’s available",
+    color: "#ff0036",
+    imagePosition: "60% center",
+  },
+] as const;
+
+const locations = [
+  {
+    name: "Ibiza",
+    images: [
+      { src: "/images/events/event-07.jpg", alt: "Yacht party in Ibiza" },
+      { src: "/images/events/event-10.jpg", alt: "Sunset drinks in Ibiza" },
+      { src: "/images/events/event-08.jpg", alt: "Nightclub DJ in Ibiza" },
+      { src: "/images/events/event-03.jpg", alt: "Friends celebrating in Ibiza" },
+    ],
+  },
+  {
+    name: "Bali",
+    images: [
+      { src: "/images/events/event-10.jpg", alt: "Villa gathering in Bali" },
+      { src: "/images/events/event-11.jpg", alt: "Crowd at a Bali event" },
+      { src: "/images/events/event-07.jpg", alt: "Boat day in Bali" },
+      { src: "/images/events/event-02.jpg", alt: "Celebration in Bali" },
+    ],
+  },
+  {
+    name: "London",
+    images: [
+      { src: "/images/events/event-09.jpg", alt: "London event venue" },
+      { src: "/images/events/event-08.jpg", alt: "London nightclub DJ" },
+      { src: "/images/events/event-03.jpg", alt: "London party guests" },
+      { src: "/images/events/event-05.jpg", alt: "Live event in London" },
+    ],
+  },
+  {
+    name: "Australia",
+    images: [
+      { src: "/images/events/event-10.jpg", alt: "Australian private event" },
+      { src: "/images/events/event-11.jpg", alt: "Australian event crowd" },
+      { src: "/images/events/event-04.jpg", alt: "Australian festival crowd" },
+      { src: "/images/events/event-01.jpg", alt: "Australian live show" },
+    ],
+  },
+] as const;
+
+const howItWorks = [
+  {
+    number: "01",
+    title: "Set the Scene",
+    description:
+      "Describe the role, set dates, location, and budget. Your listing goes live instantly and reaches thousands of qualified staff.",
+    image: "/images/events/event-10.jpg",
+    alt: "Guests gathering at a private event",
+  },
+  {
+    number: "02",
+    title: "Pick your crew",
+    description:
+      "Browse verified profiles, watch video intros, check ratings, and shortlist your favourites. Message candidates directly through the platform.",
+    image: "/images/events/event-11.jpg",
+    alt: "An event team working with a lively crowd",
+  },
+  {
+    number: "03",
+    title: "Let the Night Play Out",
+    description:
+      "Confirm bookings, track attendance with GPS check-in, and process payments securely. Rate staff after each event to help the community.",
+    image: "/images/events/event-03.jpg",
+    alt: "Friends enjoying a successful party",
+  },
+] as const;
+
+const testimonials = [
+  {
+    quote:
+      "Marisa was friendly, proactive, and experienced. She helped the whole event feel effortless from the first guest to the final song.",
+    name: "Marco Rossi",
+    role: "Club Owner, Ibiza",
+    avatar: "/images/events/event-03.jpg",
+  },
+  {
+    quote:
+      "The quality of staff we find through PartiStaff is consistently excellent. It has become our go-to for every private event.",
+    name: "James Walker",
+    role: "Event Director, London",
+    avatar: "/images/events/event-11.jpg",
+  },
+  {
+    quote:
+      "Our host read the room perfectly and kept everything moving without ever making the night feel overly managed.",
+    name: "Sofia Martin",
+    role: "Villa Manager, Bali",
+    avatar: "/images/events/event-10.jpg",
+  },
+  {
+    quote:
+      "Booking the crew was simple, communication was clear, and everyone arrived ready to make the night memorable.",
+    name: "Alex Chen",
+    role: "Private Client, Sydney",
+    avatar: "/images/events/event-07.jpg",
+  },
+] as const;
+
+const instagramImages = [
+  { src: "/images/events/event-07.jpg", alt: "A summer yacht party" },
+  { src: "/images/events/event-09.jpg", alt: "An elegant event venue" },
+  { src: "/images/events/event-08.jpg", alt: "A DJ behind the decks" },
+  { src: "/images/events/event-10.jpg", alt: "Guests making a toast" },
+  { src: "/images/events/event-11.jpg", alt: "A lively private event" },
+  { src: "/images/events/event-03.jpg", alt: "Friends on the dance floor" },
+  { src: "/images/events/event-02.jpg", alt: "Confetti over a festival crowd" },
+] as const;
+---
+
+<BaseLayout title={pageTitle} description={pageDescription}>
+  <main>
+    <HomeHero items={heroItems} />
+    <BrandMarquee />
+
+    <section class="services" id="services">
+      <div class="container">
+        <header class="section-heading">
+          <h2>Let’s Make It Happen</h2>
+          <p>Choose the experience. We’ll match you with the right people.</p>
+        </header>
+
+        <div class="services__grid">
+          {
+            services.map((service) => (
+              <ServiceCard {...service} href="/contact-us" />
+            ))
+          }
+        </div>
+      </div>
+    </section>
+
+    <LocationGallery locations={locations} />
+    <HowItWorks steps={howItWorks} />
+    <Testimonials testimonials={testimonials} />
+    <InstagramGallery images={instagramImages} />
+    <ClosingCta
+      image="/images/events/event-03.jpg"
+      alt="Friends celebrating together at a private event"
+    />
+    <BrandMarquee />
+  </main>
+
+  <style>
+    .services {
+      padding-block: var(--space-section);
+      background: #ffffff;
+    }
+
+    .services__grid {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 1.5rem;
+    }
+
+    @media (max-width: 1024px) {
+      .services__grid {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+    }
+
+    @media (max-width: 768px) {
+      .services__grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</BaseLayout>

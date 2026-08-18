@@ -1,0 +1,82 @@
+---
+interface Props {
+  image: string;
+  alt: string;
+  title?: string;
+  description?: string;
+  items?: readonly string[];
+  primaryLabel?: string;
+  secondaryLabel?: string;
+  reverse?: boolean;
+  compact?: boolean;
+}
+
+const {
+  image,
+  alt,
+  title = "Ready to Lock It In?",
+  description = "Our people, ready when you are. Whatever you're planning, we'll make it happen.",
+  items = [
+    "Bucks parties, hens, and private events",
+    "Boat days, villas, and weekend sessions",
+    "Bartenders, DJs, and atmosphere crew",
+    "Everything you need, all in one place",
+  ],
+  primaryLabel = "Create Your Event",
+  secondaryLabel = "Browse Staff",
+  reverse = false,
+  compact = false,
+} = Astro.props;
+---
+
+<section class:list={["closing-cta", { "closing-cta--reverse": reverse, "closing-cta--compact": compact }]} id="contact">
+  <div class="container closing-cta__container">
+    <div class="closing-cta__content">
+      <h2>{title}</h2>
+      <p>{description}</p>
+      <ul>{items.map((item) => <li>{item}</li>)}</ul>
+      <div class="button-row button-row--stack-mobile">
+        <a class="button button--primary" href="/contact-us">
+          {primaryLabel}
+          <svg class="button__icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5 5 5-5 5M3 10h14"></path></svg>
+        </a>
+        <a class="button button--light" href="/#services">{secondaryLabel}</a>
+      </div>
+    </div>
+  </div>
+  <div class="closing-cta__image"><img src={image} alt={alt} loading="lazy" /></div>
+</section>
+
+<style>
+  .closing-cta { position: relative; min-height: 56.25rem; overflow: hidden; color: #fff; background: #000; }
+  .closing-cta--compact { min-height: 43rem; }
+  .closing-cta::before { position: absolute; inset: 0 50% 0 0; z-index: 1; background: url("/brand/pattern.png") -0.5rem center / 17rem auto; opacity: 0.17; content: ""; pointer-events: none; }
+  .closing-cta--reverse::before { inset: 0 0 0 50%; }
+  .closing-cta__container { position: relative; z-index: 2; display: flex; min-height: 56.25rem; align-items: center; }
+  .closing-cta--compact .closing-cta__container { min-height: 43rem; }
+  .closing-cta--reverse .closing-cta__container { justify-content: flex-end; }
+  .closing-cta__content { width: 50%; padding: 3.75rem 3.75rem 3.75rem 0; }
+  .closing-cta--reverse .closing-cta__content { padding: 3.75rem 0 3.75rem 4.5rem; }
+  h2 { margin-bottom: 1.5rem; font-family: var(--font-cursive); font-size: clamp(4rem, 5.6vw, 5rem); font-weight: 400; line-height: 1.05; letter-spacing: 0; }
+  .closing-cta__content > p { max-width: 31rem; margin-bottom: 2rem; color: #f7f8f2; font-size: 1.125rem; font-weight: 500; }
+  ul { display: flex; padding: 0; margin: 0 0 2.5rem; flex-direction: column; gap: 0.8rem; list-style: none; }
+  li { display: flex; align-items: flex-start; gap: 0.55rem; color: rgb(255 255 255 / 72%); font-size: 1rem; font-weight: 500; }
+  li::before { flex: 0 0 auto; color: #fff; content: "\2192"; }
+  .closing-cta svg { fill: none; stroke: currentColor; stroke-linecap: round; stroke-linejoin: round; stroke-width: 1.5; }
+  .closing-cta__image { position: absolute; top: 0; right: 0; bottom: 0; width: 50%; }
+  .closing-cta--reverse .closing-cta__image { right: auto; left: 0; }
+  .closing-cta__image img { width: 100%; height: 100%; object-fit: cover; }
+
+  @media (max-width: 900px) {
+    .closing-cta, .closing-cta__container, .closing-cta--compact, .closing-cta--compact .closing-cta__container { min-height: 44rem; }
+    .closing-cta::before, .closing-cta--reverse::before { inset: 0; }
+    .closing-cta__container { background: rgb(0 0 0 / 74%); }
+    .closing-cta__content, .closing-cta--reverse .closing-cta__content { width: 100%; padding: 3.75rem 0; }
+    .closing-cta__image, .closing-cta--reverse .closing-cta__image { right: 0; left: 0; z-index: 0; width: 100%; }
+  }
+  @media (max-width: 600px) {
+    .closing-cta, .closing-cta__container, .closing-cta--compact, .closing-cta--compact .closing-cta__container { min-height: 42rem; }
+    h2 { font-size: 3.75rem; }
+    .closing-cta__content > p, li { font-size: 0.95rem; }
+  }
+</style>

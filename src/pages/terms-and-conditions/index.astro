@@ -1,0 +1,120 @@
+---
+import BrandMarquee from "../../components/BrandMarquee.astro";
+import LegalDocument from "../../components/LegalDocument.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const introduction = [
+  "These Legal Terms and Conditions establish the conditions of access to and use of PARTISTAFF.COM and its services.",
+  "Use of the website implies acceptance of these terms by users, candidates, customers, and event organisers. Users must be of legal age and capable of acting on their own behalf. These terms may change, so they should be read carefully.",
+] as const;
+
+const sections = [
+  {
+    id: "definitions",
+    title: "Definitions",
+    paragraphs: [
+      "Documents include profiles, registrations, photographs, graphics, messages, comments, data, and other uploaded or published materials. Services include the platform features used to publish profiles and connect users with customers seeking people for events.",
+      "A User is a visitor or registered person using the site. A Candidate is a registered user whose profile may be presented for an Engagement. A Customer is an event organiser seeking candidates. An Event records its venue, date, time, scope, and staffing requirements. An Engagement is the interaction or service arrangement agreed between a customer and candidate.",
+    ],
+  },
+  {
+    id: "services",
+    title: "Services",
+    paragraphs: [
+      "PARTISTAFF.COM enables users to publish profiles, experience, media, availability, and recommendations for customers interested in engaging talent for events, entertainment, hospitality, or related services.",
+      "The platform acts as an intermediary and may charge customers introduction or booking fees. The specific terms of an Engagement are agreed directly between users and customers.",
+    ],
+  },
+  {
+    id: "user-responsibilities",
+    title: "Responsibilities and Obligations of Users",
+    paragraphs: [
+      "Registered users must provide accurate and current information, secure their account credentials, and ensure that profile content and proposed services are lawful, professional, and appropriate for the platform.",
+      "Users are responsible for checking the nature of each Event, deciding whether they are qualified and comfortable to participate, and negotiating remuneration, travel, timing, and contractual details directly with the Customer.",
+      "Users grant PartiStaff the permissions required to publish and promote profile content, introduce profiles to potential customers, and facilitate paid or unpaid Engagements in accordance with the privacy policy and platform process.",
+    ],
+    bullets: [
+      "Do not publish nudity, sexually explicit content, illegal services, or misleading information.",
+      "Keep profile details, availability, work status, travel preferences, and expected rates accurate.",
+      "Do not bypass the platform to avoid booking or introduction fees.",
+      "Comply with laws and any professional requirements relevant to an Engagement.",
+    ],
+  },
+  {
+    id: "customer-responsibilities",
+    title: "Customers' Responsibilities and Obligations",
+    paragraphs: [
+      "PARTISTAFF.COM is a facilitator and does not employ candidates. Customers engage candidates directly and must provide complete, honest, and verifiable information when registering an account and Event.",
+      "Customers are responsible for agreed rates, transport arrangements, event accuracy, candidate safety, and applicable deposits, cancellation fees, or other charges. Changes and cancellations may create obligations to candidates depending on timing and the terms already agreed.",
+    ],
+    bullets: [
+      "Provide the Event date, start and finish times, address, nature, and required services.",
+      "State proposed rates and any travel, transport, or reimbursable expenses.",
+      "Maintain accurate contact details and be available when candidates arrive.",
+      "Complete bookings through the platform and do not exchange details to bypass its process.",
+    ],
+  },
+  {
+    id: "engagements",
+    title: "Your Engagement with Candidates",
+    paragraphs: [
+      "Although PartiStaff is not a party to the direct service agreement, customers and candidates should record the essential terms of every Engagement in writing.",
+    ],
+    bullets: [
+      "Date, start time, and expected finish time",
+      "Event address and nature",
+      "Agreed engagement or hourly rate",
+      "Cancellation and postponement rights",
+    ],
+  },
+  {
+    id: "termination",
+    title: "Termination",
+    paragraphs: [
+      "PARTISTAFF.COM may terminate access where these terms are breached. Candidates connected to an active Event may be notified and may decide whether to continue under their direct agreement. Non-refundable platform fees may remain payable.",
+    ],
+  },
+  {
+    id: "platform-responsibilities",
+    title: "PARTISTAFF.COM Responsibilities and Obligations",
+    paragraphs: [
+      "PartiStaff applies appropriate operational and security measures but cannot guarantee that the website will always be uninterrupted, error-free, or immune from technical failures and unauthorised access.",
+      "Users remain responsible for the truth, legality, quality, and suitability of uploaded documents and for decisions made using platform information. PartiStaff is not liable for indirect or consequential losses arising from misuse, third-party conduct, unavailable services, data delivery issues, or events beyond its reasonable control.",
+    ],
+  },
+  {
+    id: "conditions-of-use",
+    title: "General Conditions of Use",
+    paragraphs: [
+      "The website, its presentation, content, services, and operating rules may be updated when changes are published. Users must access and use the website diligently, correctly, lawfully, and in accordance with these terms and authorised instructions.",
+      "Use that harms PartiStaff, customers, third parties, systems, networks, or intellectual property is prohibited.",
+    ],
+    bullets: [
+      "Do not copy, distribute, alter, scrape, mine, or republish content without permission or a lawful basis.",
+      "Do not send spam, chain messages, unauthorised promotions, or misleading communications.",
+      "Do not harass, threaten, defraud, defame, or publish obscene or unlawful material.",
+      "Do not introduce malware, spyware, harmful code, automated extraction tools, or attempts to bypass navigation and security.",
+    ],
+  },
+  {
+    id: "jurisdiction",
+    title: "Jurisdiction and Applicable Legislation",
+    paragraphs: [
+      "These terms are governed and interpreted in accordance with Spanish law, subject to any mandatory lawful provision to the contrary. Users submit to the jurisdiction of the courts of Barcelona, Spain, and remain responsible for complying with laws that apply where they access or use the services.",
+    ],
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Terms and Conditions | PartiStaff"
+  description="Terms governing access to and use of the PartiStaff platform and marketplace."
+>
+  <LegalDocument
+    title="Terms and Conditions"
+    lastUpdated="March 1, 2025"
+    {introduction}
+    {sections}
+  />
+  <BrandMarquee />
+</BaseLayout>

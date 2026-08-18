@@ -1,0 +1,243 @@
+---
+interface Location {
+  name: string;
+  images: readonly { src: string; alt: string }[];
+}
+
+interface Props {
+  locations: readonly Location[];
+}
+
+const { locations } = Astro.props;
+---
+
+<section class="locations" id="locations" data-location-gallery>
+  <div class="container">
+    <header class="section-heading">
+      <h2>Our People, Wherever You Are</h2>
+      <p>Staff and events across the world’s top party destinations</p>
+    </header>
+  </div>
+
+  <div class="locations__tabs" role="tablist" aria-label="Locations">
+    {
+      locations.map((location, index) => (
+        <button
+          class:list={["locations__tab", { "is-active": index === 0 }]}
+          id={`location-tab-${index}`}
+          type="button"
+          role="tab"
+          aria-selected={index === 0}
+          aria-controls={`location-panel-${index}`}
+          tabindex={index === 0 ? 0 : -1}
+          data-location-tab
+        >
+          {location.name}
+        </button>
+      ))
+    }
+  </div>
+
+  {
+    locations.map((location, index) => (
+      <div
+        class:list={["locations__panel", { "is-active": index === 0 }]}
+        id={`location-panel-${index}`}
+        role="tabpanel"
+        aria-labelledby={`location-tab-${index}`}
+        hidden={index !== 0}
+        data-location-panel
+      >
+        <div class="locations__photos scroll-container">
+          {location.images.map((image) => (
+            <figure>
+              <img src={image.src} alt={image.alt} loading="lazy" />
+            </figure>
+          ))}
+        </div>
+      </div>
+    ))
+  }
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-location-gallery]").forEach((gallery) => {
+    const tabs = Array.from(
+      gallery.querySelectorAll<HTMLButtonElement>("[data-location-tab]"),
+    );
+    const panels = Array.from(
+      gallery.querySelectorAll<HTMLElement>("[data-location-panel]"),
+    );
+
+    function activate(index: number, moveFocus = false) {
+      tabs.forEach((tab, tabIndex) => {
+        const active = tabIndex === index;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && moveFocus) tab.focus();
+      });
+
+      panels.forEach((panel, panelIndex) => {
+        const active = panelIndex === index;
+        panel.classList.toggle("is-active", active);
+        panel.hidden = !active;
+        if (active) panel.querySelector(".locations__photos")?.scrollTo({ left: 0 });
+      });
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => activate(index));
+      tab.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowLeft" && event.key !== "ArrowRight") return;
+        event.preventDefault();
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        activate((index + direction + tabs.length) % tabs.length, true);
+      });
+    });
+  });
+</script>
+
+<style>
+  .locations {
+    padding-top: var(--space-section);
+    background: #ffffff;
+  }
+
+  .locations__tabs {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .locations__tab {
+    display: inline-flex;
+    height: 3rem;
+    padding-inline: 1.55rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.5rem;
+    color: var(--color-text-muted);
+    background: transparent;
+    border: 0;
+    border-bottom: 3px solid transparent;
+    cursor: pointer;
+  }
+
+  .locations__tab.is-active {
+    color: #221f20;
+    font-weight: 600;
+    border-bottom-color: #221f20;
+  }
+
+  .locations__tab.is-active::before { content: "["; font-size: 1.35rem; }
+  .locations__tab.is-active::after { content: "]"; font-size: 1.35rem; }
+
+  .locations__tab:focus-visible {
+    outline: 3px solid rgb(238 43 102 / 30%);
+    outline-offset: -3px;
+  }
+
+  .locations__panel[hidden] {
+    display: none;
+  }
+
+  .locations__panel.is-active {
+    animation: location-in 320ms ease;
+  }
+
+  .locations__photos {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    overflow: hidden;
+  }
+
+  figure {
+    position: relative;
+    height: 34.375rem;
+    margin: 0;
+    overflow: hidden;
+    border: 1px solid #ffffff;
+  }
+
+  figure::after {
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    left: 0;
+    height: 7rem;
+    background: linear-gradient(0deg, rgb(0 0 0 / 52%), transparent);
+    content: "";
+    pointer-events: none;
+  }
+
+  figure img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform 400ms ease;
+  }
+
+  figure:hover img {
+    transform: scale(1.03);
+  }
+
+  @keyframes location-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (max-width: 1024px) {
+    figure {
+      height: 25rem;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .locations__tabs {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .locations__tab {
+      padding-inline: 0.3rem;
+      font-size: 0.82rem;
+      gap: 0.25rem;
+    }
+
+    .locations__photos {
+      grid-template-columns: none;
+      grid-auto-flow: column;
+      grid-auto-columns: 50%;
+      overflow-x: auto;
+      overscroll-behavior-inline: contain;
+      scroll-snap-type: inline mandatory;
+      scrollbar-width: none;
+    }
+
+    .locations__photos::-webkit-scrollbar {
+      display: none;
+    }
+
+    figure {
+      height: clamp(20rem, 88vw, 27rem);
+      scroll-snap-align: start;
+    }
+  }
+
+  @media (max-width: 400px) {
+    .locations__photos {
+      grid-auto-columns: 100%;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .locations__panel.is-active {
+      animation: none;
+    }
+
+    figure img {
+      transition: none;
+    }
+  }
+</style>

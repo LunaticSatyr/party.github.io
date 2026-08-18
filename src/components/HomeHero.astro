@@ -1,0 +1,253 @@
+---
+import StackedCarousel from "./StackedCarousel.astro";
+
+interface CarouselItem {
+  src: string;
+  alt: string;
+}
+
+interface Props {
+  items: readonly CarouselItem[];
+}
+
+const { items } = Astro.props;
+---
+
+<section class="home-hero" id="top">
+  <div class="container home-hero__container">
+    <h1 class="sr-only">PartiStaff event talent and private party experiences</h1>
+    <div class="home-hero__wordmark">
+      <img src="/brand/wordmark-white.svg" alt="PartiStaff" />
+    </div>
+
+    <div class="home-hero__body">
+      <div class="home-hero__tagline" aria-hidden="true">
+        <span>Our people,</span>
+        <span>Your place</span>
+      </div>
+
+      <div class="home-hero__collage">
+        <StackedCarousel
+          items={items}
+          label="PartiStaff event moments"
+          initialIndex={2}
+          autoplayMs={4000}
+        />
+      </div>
+
+      <div class="home-hero__bottom">
+        <div class="home-hero__copy">
+          <p class="home-hero__badge">
+            <svg viewBox="0 0 16 16" aria-hidden="true">
+              <path d="m8 1.5 2 4 4.5.7-3.2 3.1.8 4.4L8 11.6l-4.1 2.1.8-4.4-3.2-3.1L6 5.5 8 1.5Z"></path>
+            </svg>
+            Trusted for 10,000+ unforgettable nights
+          </p>
+          <p>Whatever you’re planning, we’ll bring the crew to match.</p>
+        </div>
+
+        <svg class="home-hero__sketch" viewBox="0 0 154 166" aria-hidden="true">
+          <path d="M46 2C14 11-9 30 7 66c12 28 53 42 76 18 6-6 4-17-1-23-7-9-16-10-27-6-18 8-35 32-26 52 14 32 49 44 82 43 9 0 31-4 40-9m-21-1 21 1-12 19"></path>
+        </svg>
+
+        <div class="button-row button-row--stack-mobile home-hero__actions">
+          <a class="button button--primary" href="/contact-us">
+            Create Your Event
+            <svg class="button__icon" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m12 5 5 5-5 5M3 10h14"></path>
+            </svg>
+          </a>
+          <a class="button" href="#services">
+            Browse Talent
+            <svg class="button__icon" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m12 5 5 5-5 5M3 10h14"></path>
+            </svg>
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .home-hero {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .home-hero::before {
+    position: absolute;
+    inset: 0;
+    background-image: url("/brand/pattern.png");
+    background-position: 1.25rem center;
+    background-size: 28rem auto;
+    opacity: 0.055;
+    content: "";
+    pointer-events: none;
+  }
+
+  .home-hero__container {
+    position: relative;
+  }
+
+  .home-hero__wordmark {
+    padding: 2.25rem;
+    background: #000000;
+  }
+
+  .home-hero__wordmark img {
+    width: 100%;
+    height: auto;
+  }
+
+  .home-hero__body {
+    position: relative;
+  }
+
+  .home-hero__tagline {
+    position: relative;
+    z-index: 0;
+    display: flex;
+    margin-bottom: -0.625rem;
+    align-items: center;
+    justify-content: space-between;
+    color: #000000;
+    font-size: clamp(1.25rem, 2.5vw, 2.25rem);
+    font-weight: 400;
+    line-height: 1;
+    letter-spacing: 0;
+    text-transform: uppercase;
+    transform: translateY(2.5rem);
+  }
+
+  .home-hero__collage {
+    position: relative;
+    z-index: 1;
+  }
+
+  .home-hero__bottom {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 9.625rem auto;
+    align-items: end;
+    padding: 1.75rem 0 3.75rem;
+    gap: 1.5rem;
+  }
+
+  .home-hero__copy {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+    color: #404040;
+    font-size: 1.125rem;
+  }
+
+  .home-hero__badge {
+    display: inline-flex;
+    width: fit-content;
+    padding: 0.35rem 0.875rem;
+    align-items: center;
+    gap: 0.4rem;
+    color: var(--color-accent-dark);
+    font-size: 0.875rem;
+    font-weight: 600;
+    background: rgb(238 43 102 / 12%);
+    border-radius: 999px;
+  }
+
+  .home-hero__badge svg {
+    width: 0.875rem;
+    height: 0.875rem;
+    fill: none;
+    stroke: currentColor;
+    stroke-linejoin: round;
+    stroke-width: 1.35;
+  }
+
+  .home-hero__sketch {
+    width: 9.625rem;
+    height: 8.5rem;
+    overflow: visible;
+    fill: none;
+    stroke: #1c1c1c;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 3;
+  }
+
+  .home-hero__actions {
+    justify-content: flex-end;
+  }
+
+  .home-hero__actions svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+  }
+
+  @media (max-width: 1024px) {
+    .home-hero__wordmark {
+      padding: 1.75rem;
+    }
+
+    .home-hero__bottom {
+      grid-template-columns: 1fr;
+      justify-items: center;
+      padding-bottom: 2.5rem;
+      text-align: center;
+      gap: 2rem;
+    }
+
+    .home-hero__copy {
+      align-items: center;
+    }
+
+    .home-hero__sketch {
+      display: none;
+    }
+
+    .home-hero__actions {
+      justify-content: center;
+    }
+  }
+
+  @media (max-width: 768px) {
+    .home-hero__wordmark {
+      padding: 1rem;
+    }
+
+    .home-hero__tagline {
+      padding-top: 1.25rem;
+      margin-bottom: 1.25rem;
+      justify-content: center;
+      gap: 0.35rem;
+      font-size: clamp(1.1rem, 5.4vw, 1.5rem);
+      transform: none;
+    }
+
+    .home-hero__bottom {
+      padding-top: 1.25rem;
+      gap: 1.25rem;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .home-hero__wordmark {
+      padding: 0.75rem;
+    }
+
+    .home-hero__copy {
+      font-size: 0.9375rem;
+    }
+
+    .home-hero__badge {
+      font-size: 0.7rem;
+    }
+
+    .home-hero__actions {
+      width: 100%;
+    }
+  }
+</style>

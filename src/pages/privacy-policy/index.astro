@@ -1,0 +1,118 @@
+---
+import BrandMarquee from "../../components/BrandMarquee.astro";
+import LegalDocument from "../../components/LegalDocument.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const introduction = [
+  'PartiStaff Pty Ltd (described in this policy as "PartiStaff" or "we") is committed to protecting your privacy. This policy explains our online collection and use of data.',
+  "By using the site, you understand that information may be retained, processed, accessed, and used in Australia or other jurisdictions where privacy laws may differ.",
+] as const;
+
+const sections = [
+  {
+    id: "collection",
+    title: "Collection of Your Personal Information",
+    paragraphs: [
+      "PartiStaff may collect information from job seekers including qualifications, employment experience, resumes, references, profiles, contact details, and information supplied during registration.",
+      "When you visit the site, technical and navigational information may also be collected, including referral source, IP address, browser, language, access times, pages viewed, and actions taken.",
+      "Additional information such as billing details or demographic information may be collected when needed to provide services or process transactions.",
+    ],
+  },
+  {
+    id: "use",
+    title: "Use of Your Personal Information",
+    paragraphs: [
+      "PartiStaff uses personal information to connect job seekers and prospective job providers, operate and improve the platform, process transactions, provide support, perform research, and personalise services.",
+      "We may send transactional messages and, where permitted, surveys or marketing communications. Marketing preferences can be changed without affecting essential account communications.",
+      "Information may be stored and processed in countries where PartiStaff or its service providers operate. Profile content may be used to promote registered talent and the platform.",
+    ],
+  },
+  {
+    id: "sharing",
+    title: "Sharing of Your Personal Information",
+    paragraphs: [
+      "Information may be shared with job providers, job seekers, affiliated companies, and service providers when needed to operate the marketplace and deliver the purposes described in this policy.",
+      "Service providers receive only the information required for their role and are expected to maintain confidentiality. Information may also transfer during a merger, acquisition, insolvency, or sale of business assets.",
+      "PartiStaff may disclose information where required by law or where reasonably necessary to respond to claims or protect the rights, property, and safety of the company, users, or public.",
+    ],
+  },
+  {
+    id: "access",
+    title: "Accessing Your Personal Information",
+    paragraphs: [
+      "You can review or update information through your account. PartiStaff can assist with corrections and eligible deletion requests; additional help can be requested through the contact page.",
+    ],
+  },
+  {
+    id: "preferences",
+    title: "Personal Information Preferences",
+    paragraphs: [
+      "You may opt out of marketing communications at any time. Transactional and account communications may continue where they are required to provide the service.",
+    ],
+  },
+  {
+    id: "cookies",
+    title: "Use of Cookies and Other Technologies",
+    paragraphs: [
+      "Cookies help users sign in, personalise their experience, and retain registration or navigation information. Third-party providers may also use cookies governed by their own practices.",
+      "Most browsers allow cookies to be declined, although doing so may prevent sign-in or other interactive features. The site may also use small electronic images to understand page visits or message opens without using them to collect personal information directly.",
+    ],
+  },
+  {
+    id: "security",
+    title: "Security of Your Personal Information",
+    paragraphs: [
+      "PartiStaff follows accepted industry practices to protect information and uses encrypted transmission where appropriate. No internet transmission or electronic storage method can be guaranteed as completely secure.",
+      "Users are responsible for keeping account passwords confidential.",
+    ],
+  },
+  {
+    id: "interactive-services",
+    title: "Forums and Other Interactive Services",
+    paragraphs: [
+      "Content posted in public or interactive areas may be visible to others and may be retained. Users should avoid publishing personal information they do not want publicly available.",
+    ],
+  },
+  {
+    id: "email-referrals",
+    title: "Email Referrals",
+    paragraphs: [
+      "When a referral feature is used, the recipient's name and email are used to send the requested one-time invitation. A provider administering the feature may use the information only for that purpose.",
+    ],
+  },
+  {
+    id: "children",
+    title: "Children",
+    paragraphs: [
+      "PartiStaff does not intend to solicit or collect personal information from anyone under 18. People under 18 should not use or submit information through the site.",
+    ],
+  },
+  {
+    id: "links-complaints",
+    title: "Links and Complaints",
+    paragraphs: [
+      "Linked websites may have different privacy practices, and PartiStaff is not responsible for those external policies. Questions, complaints, or concerns about this policy can be submitted through the contact page.",
+    ],
+  },
+  {
+    id: "changes",
+    title: "Changes to This Privacy Policy",
+    paragraphs: [
+      "This policy may change over time. Material changes may be announced on the site, home page, or by email. Users are encouraged to review the policy periodically.",
+    ],
+  },
+] as const;
+---
+
+<BaseLayout
+  title="Privacy Policy for Clients & Talent | PartiStaff"
+  description="How PartiStaff collects, uses, shares, and protects personal information."
+>
+  <LegalDocument
+    title="Privacy Policy"
+    lastUpdated="March 1, 2025"
+    {introduction}
+    {sections}
+  />
+  <BrandMarquee />
+</BaseLayout>

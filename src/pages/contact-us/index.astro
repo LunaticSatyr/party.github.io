@@ -1,0 +1,22 @@
+---
+import BrandMarquee from "../../components/BrandMarquee.astro";
+import PageHero from "../../components/PageHero.astro";
+import ContactForm from "../../features/contact/ContactForm.astro";
+import { contactDetails } from "../../features/contact/contact.config";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+---
+
+<BaseLayout
+  title="Contact PartiStaff | Event Talent Support"
+  description="Contact PartiStaff about yacht hire, villas, entertainment, staffing, or using the platform."
+>
+  <main>
+    <PageHero
+      title="Get in Touch"
+      description="If you have a question, fill in the form and we will get back to you shortly. Please provide as much information as possible."
+      compact
+    />
+    <ContactForm {...contactDetails} />
+    <BrandMarquee />
+  </main>
+</BaseLayout>

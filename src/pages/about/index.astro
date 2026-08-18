@@ -1,0 +1,158 @@
+---
+import BrandMarquee from "../../components/BrandMarquee.astro";
+import ClosingCta from "../../components/ClosingCta.astro";
+import StatsBand from "../../components/StatsBand.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const team = [
+  { name: "Alex Carter", role: "CEO & Founder", image: "/images/events/event-01.jpg" },
+  { name: "Jordan Lee", role: "Head of Marketing", image: "/images/events/event-02.jpg" },
+  { name: "Taylor Morgan", role: "Staff & Client Liaison", image: "/images/events/event-03.jpg" },
+  { name: "Casey Bennett", role: "Events & Production", image: "/images/events/event-04.jpg" },
+  { name: "Riley Quinn", role: "Ibiza Concierge", image: "/images/events/event-05.jpg" },
+  { name: "Morgan Hayes", role: "Head of Operations", image: "/images/events/event-06.jpg" },
+] as const;
+---
+
+<BaseLayout title="About PartiStaff | Event Talent & Experiences" description="Learn how PartiStaff connects standout personalities with premium events and flexible opportunities around the world.">
+  <main class="about">
+    <section class="about__story pattern-section">
+      <div class="container">
+        <header class="about__intro">
+          <h1>About PartiStaff</h1>
+          <p class="about__lead">At PartiStaff, we believe the right people make the night.</p>
+          <p>What started as a simple idea - connecting great personalities with unforgettable events - has evolved into a premium social staffing platform trusted by clients across Australia and internationally.</p>
+          <p>We specialise in providing high-quality social talent for private events, luxury experiences, brand activations, hospitality functions, yachts, villas, nightlife, and exclusive celebrations. From polished event hosts and charismatic party staff to promotional talent and lifestyle companions for social occasions, PartiStaff was built to elevate the energy, atmosphere, and experience of every event.</p>
+        </header>
+
+        <img class="about__hero-image" src="/images/about/hero.jpg" alt="PartiStaff talent enjoying a private poolside event" />
+
+        <div class="about__details">
+          <div class="about__copy">
+            <section>
+              <h2>More Than Staffing</h2>
+              <p><strong>PartiStaff is not a traditional agency.</strong></p>
+              <p>We are a modern marketplace designed around flexibility, personality, presentation, and experience. Our platform connects clients directly with carefully selected talent, making bookings faster, easier, and more transparent than the outdated agency model.</p>
+              <p>Whether it's a luxury boat day in Ibiza, a private celebration in Sydney, a VIP table experience, or a corporate event requiring standout personalities, PartiStaff gives clients access to a curated network of confident, social, and professional talent.</p>
+            </section>
+            <section>
+              <h2>Built for the Modern Social Scene</h2>
+              <p><strong>Today's events are about more than logistics - they're about atmosphere.</strong></p>
+              <p>The people at an event shape the energy, create connections, and influence how the entire experience feels. We created PartiStaff to help clients bring together great people, great presentation, and unforgettable moments.</p>
+              <p>Our talent are selected not only for appearance and professionalism, but for confidence, communication skills, social intelligence, and the ability to enhance the vibe of an event naturally and authentically.</p>
+            </section>
+            <section>
+              <h2>For Talent</h2>
+              <p>PartiStaff also creates flexible, exciting opportunities for outgoing individuals looking to work in premium social environments.</p>
+              <p>Our platform empowers talent to:</p>
+              <ul>
+                <li>Choose when they work</li>
+                <li>Connect directly with clients</li>
+                <li>Access premium opportunities</li>
+                <li>Build their profile and reputation</li>
+                <li>Work across events, hospitality, nightlife, travel, and lifestyle experiences</li>
+              </ul>
+            </section>
+            <section>
+              <h3>The Future of Social Experiences</h3>
+              <p><strong>We're building more than an app.</strong></p>
+              <p>We're building a global community centred around experiences, connection, energy, and unforgettable events.</p>
+              <p>Welcome to PartiStaff.</p>
+            </section>
+          </div>
+          <div class="about__collage"><img src="/images/about/collage.png" alt="A collage of PartiStaff event experiences" loading="lazy" /></div>
+        </div>
+
+        <div class="about__purpose">
+          <article style="--purpose-image: url('/images/about/mission.jpeg')">
+            <div><h2>Our Mission</h2><p>To empower hospitality professionals to build thriving careers across the world's most exciting destinations, while giving event organisers and venues instant access to a trusted network of verified talent.</p></div>
+          </article>
+          <article style="--purpose-image: url('/images/about/vision.jpeg')">
+            <div><h2>Our Vision</h2><p>A world where every hospitality professional can work anywhere, and every venue can staff any event at the tap of a button. We are making the global hospitality workforce truly mobile.</p></div>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <StatsBand />
+
+    <section class="about__team pattern-section">
+      <div class="container">
+        <header class="section-heading"><h2>Meet the Team</h2><p>The people building the future of hospitality staffing</p></header>
+        <div class="about__team-grid">
+          {team.map((member) => (
+            <article class="about__member">
+              <img src={member.image} alt={member.name} loading="lazy" />
+              <div><h3>{member.name}</h3><p>{member.role}</p></div>
+            </article>
+          ))}
+        </div>
+      </div>
+    </section>
+
+    <ClosingCta
+      image="/images/about/cta.jpg"
+      alt="PartiStaff talent at a poolside event"
+      title="Ready to Get Started?"
+      description="Join thousands of professionals and event organisers already using PartiStaff."
+      items={["Models - Boats, Villas, Clubs, Ibiza", "Bartenders & Service Staff", "DJs, Entertainers & Live Acts", "Promotional & Brand Staff"]}
+      primaryLabel="Sign Up as Staff"
+      secondaryLabel="Browse Jobs"
+      reverse
+      compact
+    />
+    <BrandMarquee />
+  </main>
+</BaseLayout>
+
+<style>
+  .pattern-section { position: relative; overflow: hidden; background: #fff; }
+  .pattern-section::before { position: absolute; inset: 0; background: url("/brand/pattern.png") 2rem top / 29rem auto; filter: invert(1); opacity: 0.035; content: ""; pointer-events: none; }
+  .pattern-section > :global(.container) { position: relative; }
+  .about__story { padding-block: clamp(3.5rem, 7vw, 6.25rem) var(--space-section); }
+  .about__intro { max-width: 57rem; margin-inline: auto; text-align: center; }
+  .about__intro h1, .about__copy h2, .about__purpose h2, .about__member h3 { font-family: var(--font-cursive); font-weight: 400; letter-spacing: 0; }
+  .about__intro h1 { font-size: clamp(4rem, 7vw, 6.25rem); line-height: 1; }
+  .about__lead { margin-top: 1.25rem; color: #111; font-size: clamp(1.1rem, 2vw, 1.35rem); font-weight: 600; }
+  .about__intro p:not(.about__lead) { margin-top: 1.1rem; color: var(--color-text-muted); line-height: 1.7; }
+  .about__hero-image { width: 100%; height: clamp(24rem, 46vw, 43rem); margin-top: clamp(3rem, 6vw, 5rem); object-fit: cover; border-radius: var(--radius-md); }
+  .about__details { display: grid; grid-template-columns: minmax(0, 0.92fr) minmax(25rem, 1.08fr); margin-top: clamp(4rem, 8vw, 7rem); align-items: start; gap: clamp(3rem, 7vw, 7rem); }
+  .about__copy { display: grid; gap: 3.5rem; }
+  .about__copy section { scroll-margin-top: 7rem; }
+  .about__copy h2 { margin-bottom: 1.25rem; font-size: clamp(3rem, 4.7vw, 4.4rem); line-height: 1; }
+  .about__copy h3 { margin-bottom: 1.1rem; font-size: 1.5rem; font-weight: 600; }
+  .about__copy p, .about__copy li { color: var(--color-text-muted); line-height: 1.7; }
+  .about__copy p + p { margin-top: 1rem; }
+  .about__copy strong { color: #111; font-weight: 600; }
+  .about__copy ul { display: grid; padding-left: 1.2rem; margin-top: 0.75rem; gap: 0.45rem; }
+  .about__collage { position: sticky; top: 7.5rem; }
+  .about__collage img { width: 100%; height: auto; }
+  .about__purpose { display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); margin-top: clamp(5rem, 9vw, 8rem); gap: 1rem; }
+  .about__purpose article { position: relative; display: flex; min-height: 31rem; padding: 2.5rem; overflow: hidden; align-items: flex-end; color: #fff; background: var(--purpose-image) center / cover; border-radius: var(--radius-md); }
+  .about__purpose article::before { position: absolute; inset: 0; background: linear-gradient(0deg, rgb(0 0 0 / 78%), rgb(0 0 0 / 2%) 72%); content: ""; }
+  .about__purpose article > div { position: relative; }
+  .about__purpose h2 { margin-bottom: 0.75rem; font-size: clamp(3.5rem, 5vw, 5rem); line-height: 1; }
+  .about__purpose p { max-width: 31rem; color: rgb(255 255 255 / 82%); line-height: 1.65; }
+  .about__team { padding-block: var(--space-section); }
+  .about__team-grid { display: grid; grid-template-columns: repeat(4, minmax(0, 1fr)); gap: 1rem; }
+  .about__member { position: relative; min-height: 25rem; overflow: hidden; color: #fff; border-radius: var(--radius-md); }
+  .about__member img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+  .about__member::after { position: absolute; inset: 35% 0 0; background: linear-gradient(0deg, rgb(0 0 0 / 88%), transparent); content: ""; }
+  .about__member > div { position: absolute; right: 1.4rem; bottom: 1.4rem; left: 1.4rem; z-index: 1; }
+  .about__member h3 { font-size: clamp(2rem, 3vw, 3rem); line-height: 1; }
+  .about__member p { margin-top: 0.45rem; color: rgb(255 255 255 / 72%); font-size: 0.7rem; font-weight: 700; text-transform: uppercase; }
+
+  @media (min-width: 761px) { .about__member:nth-child(5) { grid-column: 2; } }
+  @media (max-width: 900px) {
+    .about__details { grid-template-columns: 1fr; }
+    .about__collage { position: static; }
+    .about__team-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  }
+  @media (max-width: 600px) {
+    .about__hero-image { height: 25rem; }
+    .about__purpose { grid-template-columns: 1fr; }
+    .about__purpose article { min-height: 26rem; padding: 1.5rem; }
+    .about__team-grid { grid-template-columns: 1fr; }
+    .about__member { min-height: 31rem; }
+  }
+</style>

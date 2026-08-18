@@ -1,0 +1,386 @@
+---
+interface Props {
+  email: string;
+  whatsappNumber: string;
+}
+
+const { email, whatsappNumber } = Astro.props;
+const cleanWhatsAppNumber = whatsappNumber.replace(/\D/g, "");
+const initialMessage = encodeURIComponent("Hi PartiStaff, I have an enquiry.");
+---
+
+<section class="contact" aria-labelledby="contact-form-title">
+  <div class="container contact__layout">
+    <form class="contact-form" data-contact-form data-contact-email={email} data-whatsapp-number={cleanWhatsAppNumber}>
+      <h2 id="contact-form-title">Send Us a Message</h2>
+
+      <div class="contact-form__grid">
+        <label class="contact-form__field">
+          <span>First name <b>(Required)</b></span>
+          <input name="firstName" type="text" autocomplete="given-name" required />
+        </label>
+
+        <label class="contact-form__field">
+          <span>Last name</span>
+          <input name="lastName" type="text" autocomplete="family-name" />
+        </label>
+
+        <label class="contact-form__field contact-form__field--wide">
+          <span>Email address</span>
+          <input name="email" type="email" autocomplete="email" />
+          <small>It helps us if you already have an account.</small>
+        </label>
+
+        <label class="contact-form__field contact-form__field--wide">
+          <span>Mobile Number <b>(Required)</b></span>
+          <input name="mobile" type="tel" autocomplete="tel" required />
+        </label>
+
+        <label class="contact-form__field contact-form__field--wide">
+          <span>Subject <b>(Required)</b></span>
+          <select name="subject" required>
+            <option value="" selected disabled>What are you enquiring about?</option>
+            <option>Yacht Hire</option>
+            <option>Villa Hire</option>
+            <option>Entertainment</option>
+            <option>Staffing</option>
+            <option>How It Works</option>
+            <option>Other</option>
+          </select>
+        </label>
+
+        <label class="contact-form__field contact-form__field--wide">
+          <span>Message</span>
+          <textarea name="message" rows="7"></textarea>
+        </label>
+      </div>
+
+      <div class="contact-form__actions">
+        <a
+          class="contact-form__action contact-form__action--email"
+          href={`mailto:${email}?subject=New%20enquiry&body=${initialMessage}`}
+          data-email-link
+        >
+          <svg viewBox="2 2 20 20" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3.75 5.25L3 6V18L3.75 18.75H20.25L21 18V6L20.25 5.25H3.75ZM4.5 7.6955V17.25H19.5V7.69525L11.9999 14.5136L4.5 7.6955ZM18.3099 6.75H5.68986L11.9999 12.4864L18.3099 6.75Z"
+            ></path>
+          </svg>
+          Send via email
+        </a>
+        <a
+          class="contact-form__action contact-form__action--whatsapp"
+          href={`https://wa.me/${cleanWhatsAppNumber}?text=${initialMessage}`}
+          target="_blank"
+          rel="noreferrer"
+          data-whatsapp-link
+        >
+          <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path
+              fill-rule="evenodd"
+              clip-rule="evenodd"
+              d="M3.50002 12C3.50002 7.30558 7.3056 3.5 12 3.5C16.6944 3.5 20.5 7.30558 20.5 12C20.5 16.6944 16.6944 20.5 12 20.5C10.3278 20.5 8.77127 20.0182 7.45798 19.1861C7.21357 19.0313 6.91408 18.9899 6.63684 19.0726L3.75769 19.9319L4.84173 17.3953C4.96986 17.0955 4.94379 16.7521 4.77187 16.4751C3.9657 15.176 3.50002 13.6439 3.50002 12ZM12 1.5C6.20103 1.5 1.50002 6.20101 1.50002 12C1.50002 13.8381 1.97316 15.5683 2.80465 17.0727L1.08047 21.107C0.928048 21.4637 0.99561 21.8763 1.25382 22.1657C1.51203 22.4552 1.91432 22.5692 2.28599 22.4582L6.78541 21.1155C8.32245 21.9965 10.1037 22.5 12 22.5C17.799 22.5 22.5 17.799 22.5 12C22.5 6.20101 17.799 1.5 12 1.5ZM14.2925 14.1824L12.9783 15.1081C12.3628 14.7575 11.6823 14.2681 10.9997 13.5855C10.2901 12.8759 9.76402 12.1433 9.37612 11.4713L10.2113 10.7624C10.5697 10.4582 10.6678 9.94533 10.447 9.53028L9.38284 7.53028C9.23954 7.26097 8.98116 7.0718 8.68115 7.01654C8.38113 6.96129 8.07231 7.046 7.84247 7.24659L7.52696 7.52195C6.76823 8.18414 6.3195 9.2723 6.69141 10.3741C7.07698 11.5163 7.89983 13.314 9.58552 14.9997C11.3991 16.8133 13.2413 17.5275 14.3186 17.8049C15.1866 18.0283 16.008 17.7288 16.5868 17.2572L17.1783 16.7752C17.4313 16.5691 17.5678 16.2524 17.544 15.9269C17.5201 15.6014 17.3389 15.308 17.0585 15.1409L15.3802 14.1409C15.0412 13.939 14.6152 13.9552 14.2925 14.1824Z"
+            ></path>
+          </svg>
+          Send via WhatsApp
+        </a>
+      </div>
+
+      <p class="contact-form__note">
+        Your chosen app opens with this form's details. Review the message there before sending.
+      </p>
+    </form>
+
+    <aside class="contact-info" aria-labelledby="contact-info-title">
+      <h2 id="contact-info-title">Contact Information</h2>
+      <dl>
+        <div>
+          <dt>Email</dt>
+          <dd><a href={`mailto:${email}`}>{email}</a></dd>
+        </div>
+        <div>
+          <dt>Phone</dt>
+          <dd><a href={`tel:+${cleanWhatsAppNumber}`}>+{cleanWhatsAppNumber}</a></dd>
+        </div>
+        <!-- <div>
+          <dt>Address</dt>
+          <dd>42 Shoreditch High Street<br />London E1 6JJ, UK</dd>
+        </div> -->
+        <div>
+          <dt>Response Time</dt>
+          <dd>We typically respond within 24 hours</dd>
+        </div>
+      </dl>
+    </aside>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLFormElement>("[data-contact-form]").forEach((form) => {
+    const emailLink = form.querySelector<HTMLAnchorElement>("[data-email-link]");
+    const whatsappLink = form.querySelector<HTMLAnchorElement>("[data-whatsapp-link]");
+    const contactEmail = form.dataset.contactEmail ?? "";
+    const whatsappNumber = form.dataset.whatsappNumber ?? "";
+
+    function value(data: FormData, key: string) {
+      return String(data.get(key) ?? "").trim();
+    }
+
+    function messageDetails() {
+      const data = new FormData(form);
+      const firstName = value(data, "firstName");
+      const lastName = value(data, "lastName");
+      const name = [firstName, lastName].filter(Boolean).join(" ");
+      const senderEmail = value(data, "email");
+      const subject = value(data, "subject");
+      const lines = [
+        "Hi PartiStaff, I have an enquiry.",
+        "",
+        `Name: ${name}`,
+        ...(senderEmail ? [`Email: ${senderEmail}`] : []),
+        `Mobile: ${value(data, "mobile")}`,
+        `Enquiry: ${subject}`,
+        "",
+        "Message:",
+        value(data, "message") || "No additional message provided.",
+      ];
+
+      return {
+        subject: `${subject || "New enquiry"}${name ? ` from ${name}` : ""}`,
+        body: lines.join("\n"),
+      };
+    }
+
+    function updateLinks() {
+      const details = messageDetails();
+      if (emailLink) {
+        emailLink.href = `mailto:${contactEmail}?subject=${encodeURIComponent(details.subject)}&body=${encodeURIComponent(details.body)}`;
+      }
+      if (whatsappLink) {
+        whatsappLink.href = `https://wa.me/${whatsappNumber}?text=${encodeURIComponent(details.body)}`;
+      }
+    }
+
+    function validate(event: MouseEvent) {
+      if (!form.reportValidity()) event.preventDefault();
+      else updateLinks();
+    }
+
+    form.addEventListener("input", updateLinks);
+    form.addEventListener("change", updateLinks);
+    emailLink?.addEventListener("click", validate);
+    whatsappLink?.addEventListener("click", validate);
+    updateLinks();
+  });
+</script>
+
+<style>
+  .contact {
+    padding-block: var(--space-section);
+    background: #ffffff;
+  }
+
+  .contact__layout {
+    display: grid;
+    grid-template-columns: minmax(0, 1.35fr) minmax(18rem, 0.65fr);
+    align-items: start;
+    gap: clamp(2.5rem, 7vw, 7rem);
+  }
+
+  .contact-form h2,
+  .contact-info h2 {
+    margin-bottom: 1.75rem;
+    font-size: clamp(1.75rem, 3vw, 2.5rem);
+    font-weight: 600;
+  }
+
+  .contact-form__grid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 1.25rem;
+  }
+
+  .contact-form__field {
+    display: grid;
+    min-width: 0;
+    gap: 0.45rem;
+  }
+
+  .contact-form__field--wide {
+    grid-column: 1 / -1;
+  }
+
+  .contact-form__field > span {
+    font-size: 0.8125rem;
+    font-weight: 600;
+  }
+
+  .contact-form__field b {
+    color: var(--color-text-soft);
+    font-size: 0.72rem;
+    font-weight: 400;
+  }
+
+  .contact-form__field small {
+    color: var(--color-text-soft);
+    font-size: 0.72rem;
+  }
+
+  .contact-form input,
+  .contact-form select,
+  .contact-form textarea {
+    width: 100%;
+    min-width: 0;
+    color: var(--color-text);
+    font: inherit;
+    font-size: 0.9375rem;
+    background: #ffffff;
+    border: 1px solid #d3d3d3;
+    border-radius: var(--radius-sm);
+    outline: none;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease;
+  }
+
+  .contact-form input,
+  .contact-form select {
+    height: 3.25rem;
+    padding-inline: 0.9rem;
+  }
+
+  .contact-form textarea {
+    min-height: 10rem;
+    padding: 0.85rem 0.9rem;
+    resize: vertical;
+  }
+
+  .contact-form input:focus,
+  .contact-form select:focus,
+  .contact-form textarea:focus {
+    border-color: var(--color-accent);
+    box-shadow: 0 0 0 3px rgb(238 43 102 / 12%);
+  }
+
+  .contact-form__actions {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    margin-top: 1.5rem;
+    gap: 0.75rem;
+  }
+
+  .contact-form__action {
+    display: inline-flex;
+    min-height: 3.5rem;
+    padding-inline: 1rem;
+    align-items: center;
+    justify-content: center;
+    gap: 0.55rem;
+    color: #ffffff;
+    font-size: 0.9rem;
+    font-weight: 600;
+    border-radius: var(--radius-md);
+    transition:
+      background-color 160ms ease,
+      transform 160ms ease;
+  }
+
+  .contact-form__action:hover {
+    transform: translateY(-1px);
+  }
+
+  .contact-form__action svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: 0 0 auto;
+    fill: currentColor;
+    stroke: transparent;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.7;
+  }
+
+  .contact-form__action--email {
+    background: var(--color-accent);
+  }
+  .contact-form__action--email:hover {
+    background: var(--color-accent-dark);
+  }
+  .contact-form__action--whatsapp {
+    background: #167d55;
+  }
+  .contact-form__action--whatsapp:hover {
+    background: #106344;
+  }
+
+  .contact-form__note {
+    margin-top: 0.8rem;
+    color: var(--color-text-soft);
+    font-size: 0.72rem;
+  }
+
+  .contact-info {
+    position: sticky;
+    top: 8rem;
+    padding: clamp(1.5rem, 3vw, 2.5rem);
+    color: #ffffff;
+    background: #000000;
+    border-radius: var(--radius-md);
+  }
+
+  .contact-info dl,
+  .contact-info dd {
+    margin: 0;
+  }
+
+  .contact-info dl {
+    display: grid;
+    gap: 0;
+  }
+
+  .contact-info dl > div {
+    padding-block: 1.2rem;
+    border-top: 1px solid rgb(255 255 255 / 16%);
+  }
+
+  .contact-info dt {
+    margin-bottom: 0.35rem;
+    color: #f6a1bb;
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .contact-info dd {
+    color: rgb(255 255 255 / 78%);
+    font-size: 0.9rem;
+    line-height: 1.6;
+  }
+
+  .contact-info a:hover {
+    color: #ffffff;
+  }
+
+  @media (max-width: 850px) {
+    .contact__layout {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-info {
+      position: static;
+    }
+  }
+
+  @media (max-width: 600px) {
+    .contact-form__grid,
+    .contact-form__actions {
+      grid-template-columns: 1fr;
+    }
+
+    .contact-form__field--wide {
+      grid-column: auto;
+    }
+  }
+</style>

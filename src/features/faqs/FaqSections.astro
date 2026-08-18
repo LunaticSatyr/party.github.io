@@ -1,0 +1,293 @@
+---
+interface FaqItem {
+  question: string;
+  paragraphs: readonly string[];
+  bullets?: readonly string[];
+}
+
+interface FaqGroup {
+  id: string;
+  label: string;
+  items: readonly FaqItem[];
+}
+
+interface Props {
+  groups: readonly FaqGroup[];
+}
+
+const { groups } = Astro.props;
+const hasMultipleGroups = groups.length > 1;
+---
+
+<section class="faqs" data-faqs>
+  <div class="container faqs__inner">
+    {
+      hasMultipleGroups && (
+        <div class="faqs__tabs" role="tablist" aria-label="Choose a location">
+          {groups.map((group, index) => (
+            <button
+              class:list={["faqs__tab", { "is-active": index === 0 }]}
+              id={`faq-tab-${group.id}`}
+              type="button"
+              role="tab"
+              aria-controls={`faq-panel-${group.id}`}
+              aria-selected={index === 0}
+              tabindex={index === 0 ? 0 : -1}
+              data-faq-tab
+            >
+              {group.label}
+            </button>
+          ))}
+        </div>
+      )
+    }
+
+    {
+      groups.map((group, groupIndex) => (
+        <section
+          class="faqs__panel"
+          id={`faq-panel-${group.id}`}
+          role={hasMultipleGroups ? "tabpanel" : undefined}
+          aria-labelledby={hasMultipleGroups ? `faq-tab-${group.id}` : undefined}
+          hidden={groupIndex !== 0}
+          data-faq-panel
+        >
+          <h2>{group.label}</h2>
+          <div class="faqs__list">
+            {group.items.map((item, itemIndex) => (
+              <details open={itemIndex === 0}>
+                <summary>
+                  <span>{item.question}</span>
+                  <svg viewBox="0 0 20 20" aria-hidden="true">
+                    <path d="M10 4v12M4 10h12"></path>
+                  </svg>
+                </summary>
+                <div class="faqs__answer">
+                  {item.paragraphs.map((paragraph) => <p>{paragraph}</p>)}
+                  {item.bullets && (
+                    <ul>
+                      {item.bullets.map((bullet) => <li>{bullet}</li>)}
+                    </ul>
+                  )}
+                </div>
+              </details>
+            ))}
+          </div>
+        </section>
+      ))
+    }
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-faqs]").forEach((section) => {
+    const tabs = Array.from(section.querySelectorAll<HTMLButtonElement>("[data-faq-tab]"));
+    const panels = Array.from(section.querySelectorAll<HTMLElement>("[data-faq-panel]"));
+
+    function show(index: number, focus = false) {
+      tabs.forEach((tab, tabIndex) => {
+        const active = tabIndex === index;
+        tab.classList.toggle("is-active", active);
+        tab.setAttribute("aria-selected", String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
+      });
+      panels.forEach((panel, panelIndex) => {
+        panel.hidden = panelIndex !== index;
+      });
+      history.replaceState(null, "", `#${panels[index].id.replace("faq-panel-", "")}`);
+    }
+
+    tabs.forEach((tab, index) => {
+      tab.addEventListener("click", () => show(index));
+      tab.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowRight" && event.key !== "ArrowLeft") return;
+        event.preventDefault();
+        const direction = event.key === "ArrowRight" ? 1 : -1;
+        show((index + direction + tabs.length) % tabs.length, true);
+      });
+    });
+
+    const hashIndex = panels.findIndex(
+      (panel) => panel.id === `faq-panel-${location.hash.slice(1)}`,
+    );
+    if (hashIndex >= 0) show(hashIndex);
+
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    section.querySelectorAll<HTMLDetailsElement>("details").forEach((details) => {
+      const summary = details.querySelector("summary");
+      const answer = details.querySelector<HTMLElement>(".faqs__answer");
+      let animation: Animation | undefined;
+      let closing = false;
+
+      if (!summary || !answer) return;
+
+      summary.addEventListener("click", (event) => {
+        event.preventDefault();
+        animation?.cancel();
+
+        if (reducedMotion.matches) {
+          details.open = !details.open;
+          return;
+        }
+
+        if (details.open && !closing) {
+          closing = true;
+          animation = answer.animate(
+            [
+              { height: `${answer.scrollHeight}px`, opacity: 1 },
+              { height: "0px", opacity: 0 },
+            ],
+            { duration: 260, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+          );
+          animation.onfinish = () => {
+            details.open = false;
+            closing = false;
+            animation = undefined;
+          };
+          animation.oncancel = () => {
+            closing = false;
+          };
+          return;
+        }
+
+        details.open = true;
+        closing = false;
+        animation = answer.animate(
+          [
+            { height: "0px", opacity: 0 },
+            { height: `${answer.scrollHeight}px`, opacity: 1 },
+          ],
+          { duration: 300, easing: "cubic-bezier(0.4, 0, 0.2, 1)" },
+        );
+        animation.onfinish = () => {
+          animation = undefined;
+        };
+      });
+    });
+  });
+</script>
+
+<style>
+  .faqs {
+    padding-block: var(--space-section);
+    background: #ffffff;
+  }
+
+  .faqs__tabs {
+    display: flex;
+    width: fit-content;
+    padding: 0.25rem;
+    margin-bottom: 3rem;
+    gap: 0.25rem;
+    background: #f0f0f0;
+    border-radius: var(--radius-md);
+  }
+
+  .faqs__tab {
+    min-width: 8rem;
+    min-height: 2.75rem;
+    padding-inline: 1.25rem;
+    color: var(--color-text-muted);
+    font-weight: 600;
+    background: transparent;
+    border: 0;
+    border-radius: var(--radius-sm);
+    cursor: pointer;
+  }
+
+  .faqs__tab.is-active {
+    color: #ffffff;
+    background: var(--color-accent);
+  }
+
+  .faqs__panel[hidden] {
+    display: none;
+  }
+
+  .faqs__panel > h2 {
+    margin-bottom: 1.5rem;
+    font-size: clamp(2rem, 4vw, 3.25rem);
+    font-weight: 600;
+  }
+
+  .faqs__list {
+    border-top: 1px solid var(--color-border);
+  }
+
+  details {
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  summary {
+    display: flex;
+    min-height: 5rem;
+    padding-block: 1.25rem;
+    align-items: center;
+    justify-content: space-between;
+    gap: 1.5rem;
+    font-size: clamp(1rem, 1.7vw, 1.15rem);
+    font-weight: 600;
+    cursor: pointer;
+    list-style: none;
+  }
+
+  summary::-webkit-details-marker {
+    display: none;
+  }
+
+  summary svg {
+    width: 1.25rem;
+    height: 1.25rem;
+    flex: 0 0 auto;
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-width: 1.5;
+    transition: transform 180ms ease;
+  }
+
+  details[open] summary svg {
+    transform: rotate(45deg);
+  }
+
+  .faqs__answer {
+    max-width: 52rem;
+    padding: 0 2.75rem 1.6rem 0;
+    overflow: hidden;
+    color: var(--color-text-muted);
+  }
+
+  .faqs__answer p + p {
+    margin-top: 0.75rem;
+  }
+
+  .faqs__answer ul {
+    display: grid;
+    padding-left: 1.25rem;
+    margin-block: 0.8rem 0;
+    gap: 0.35rem;
+  }
+
+  @media (max-width: 520px) {
+    .faqs__tabs {
+      width: 100%;
+    }
+
+    .faqs__tab {
+      min-width: 0;
+      flex: 1;
+    }
+
+    .faqs__answer {
+      padding-right: 0;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    summary svg {
+      transition: none;
+    }
+  }
+</style>

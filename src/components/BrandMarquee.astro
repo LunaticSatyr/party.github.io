@@ -1,0 +1,36 @@
+---
+interface Props {
+  class?: string;
+}
+
+const { class: className } = Astro.props;
+---
+
+<div class:list={["brand-marquee", className]} aria-hidden="true"></div>
+
+<style>
+  .brand-marquee {
+    --marquee-tile-width: 11rem;
+    --marquee-tile-height: 1.375rem;
+
+    height: 3.375rem;
+    background-color: #000000;
+    background-image: url("/brand/wordmark-white.svg");
+    background-position: 0 center;
+    background-repeat: repeat-x;
+    background-size: var(--marquee-tile-width) var(--marquee-tile-height);
+    animation: marquee 4s linear infinite;
+  }
+
+  @keyframes marquee {
+    to {
+      background-position: calc(0px - var(--marquee-tile-width)) center;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .brand-marquee {
+      animation-play-state: paused;
+    }
+  }
+</style>

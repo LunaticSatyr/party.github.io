@@ -1,0 +1,19 @@
+{
+  "name": "party",
+  "type": "module",
+  "version": "0.0.1",
+  "private": true,
+  "packageManager": "pnpm@11.10.0",
+  "scripts": {
+    "dev": "astro dev",
+    "build": "astro build",
+    "preview": "astro preview",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "astro": "^7.1.4"
+  },
+  "devDependencies": {
+    "typescript": "^7.0.2"
+  }
+}

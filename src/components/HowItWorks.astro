@@ -1,0 +1,387 @@
+---
+interface Step {
+  number: string;
+  title: string;
+  description: string;
+  image: string;
+  alt: string;
+}
+
+interface Props {
+  steps: readonly Step[];
+  showHeading?: boolean;
+}
+
+const { steps, showHeading = true } = Astro.props;
+---
+
+<section class="how" id="how-it-works" data-how-it-works>
+  <div class="container">
+    {
+      showHeading && (
+        <header class="section-heading">
+          <h2>How It Works</h2>
+          <p>Our people. Your place. Made easy.</p>
+        </header>
+      )
+    }
+
+    <div class="how__layout">
+      <div class="how__controls">
+        <div class="how__step-list" role="tablist" aria-label="How it works steps">
+          {
+            steps.map((step, index) => (
+              <button
+                class:list={["how__step", { "is-active": index === 0 }]}
+                id={`how-control-${index}`}
+                type="button"
+                role="tab"
+                aria-selected={index === 0}
+                aria-controls={`how-panel-${index}`}
+                tabindex={index === 0 ? 0 : -1}
+                data-how-control
+              >
+                <span class="how__number">{step.number}</span>
+                <span class="how__title">{step.title}</span>
+                <span class="how__description">{step.description}</span>
+              </button>
+            ))
+          }
+        </div>
+
+        <div class="button-row how__desktop-actions">
+          <a class="button button--primary" href="/contact-us">
+            Create Your Event
+            <svg class="button__icon" viewBox="0 0 20 20" aria-hidden="true">
+              <path d="m12 5 5 5-5 5M3 10h14"></path>
+            </svg>
+          </a>
+          <a class="button" href="/#services">Browse Our Staff</a>
+        </div>
+      </div>
+
+      <div class="how__stage" data-how-stage>
+        {
+          steps.map((step, index) => (
+            <article
+              class:list={["how__panel", { "is-active": index === 0 }]}
+              id={`how-panel-${index}`}
+              role="tabpanel"
+              aria-labelledby={`how-control-${index}`}
+              hidden={index !== 0}
+              data-how-panel
+            >
+              <img src={step.image} alt={step.alt} loading="lazy" />
+              <div class="how__mobile-copy">
+                <span class="how__number">{step.number}</span>
+                <h3>{step.title}</h3>
+                <p>{step.description}</p>
+              </div>
+            </article>
+          ))
+        }
+
+        <div class="how__dots" aria-label="Choose a step">
+          {
+            steps.map((step, index) => (
+              <button
+                class:list={["how__dot", { "is-active": index === 0 }]}
+                type="button"
+                aria-label={`Show step ${step.number}: ${step.title}`}
+                aria-pressed={index === 0}
+                data-how-dot
+              />
+            ))
+          }
+        </div>
+      </div>
+
+      <div class="button-row button-row--stack-mobile how__mobile-actions">
+        <a class="button button--primary" href="/contact-us">Create Your Event</a>
+        <a class="button" href="/#services">Browse Our Staff</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-how-it-works]").forEach((section) => {
+    const controls = Array.from(
+      section.querySelectorAll<HTMLButtonElement>("[data-how-control]"),
+    );
+    const panels = Array.from(
+      section.querySelectorAll<HTMLElement>("[data-how-panel]"),
+    );
+    const dots = Array.from(section.querySelectorAll<HTMLButtonElement>("[data-how-dot]"));
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+    let activeIndex = 0;
+    let autoplayId: number | undefined;
+
+    function showStep(index: number, focusControl = false) {
+      activeIndex = (index + panels.length) % panels.length;
+
+      controls.forEach((control, controlIndex) => {
+        const active = controlIndex === activeIndex;
+        control.classList.toggle("is-active", active);
+        control.setAttribute("aria-selected", String(active));
+        control.tabIndex = active ? 0 : -1;
+        if (active && focusControl) control.focus();
+      });
+
+      panels.forEach((panel, panelIndex) => {
+        const active = panelIndex === activeIndex;
+        panel.classList.toggle("is-active", active);
+        panel.hidden = !active;
+      });
+
+      dots.forEach((dot, dotIndex) => {
+        const active = dotIndex === activeIndex;
+        dot.classList.toggle("is-active", active);
+        dot.setAttribute("aria-pressed", String(active));
+      });
+    }
+
+    function restartAutoplay() {
+      window.clearInterval(autoplayId);
+      if (!reducedMotion.matches && panels.length > 1) {
+        autoplayId = window.setInterval(() => showStep(activeIndex + 1), 5000);
+      }
+    }
+
+    controls.forEach((control, index) => {
+      control.addEventListener("click", () => {
+        showStep(index);
+        restartAutoplay();
+      });
+      control.addEventListener("keydown", (event) => {
+        if (event.key !== "ArrowDown" && event.key !== "ArrowUp") return;
+        event.preventDefault();
+        showStep(activeIndex + (event.key === "ArrowDown" ? 1 : -1), true);
+        restartAutoplay();
+      });
+    });
+
+    dots.forEach((dot, index) => {
+      dot.addEventListener("click", () => {
+        showStep(index);
+        restartAutoplay();
+      });
+    });
+
+    reducedMotion.addEventListener("change", restartAutoplay);
+    restartAutoplay();
+  });
+</script>
+
+<style>
+  .how {
+    position: relative;
+    padding-block: var(--space-section);
+    overflow: hidden;
+    background: #ffffff;
+  }
+
+  .how::before {
+    position: absolute;
+    inset: 0;
+    background-image: url("/brand/pattern.png");
+    background-position: 1.25rem center;
+    background-size: 28rem auto;
+    filter: invert(1);
+    opacity: 0.035;
+    content: "";
+    pointer-events: none;
+  }
+
+  .how :global(.container) {
+    position: relative;
+  }
+
+  .how__layout {
+    display: grid;
+    grid-template-columns: minmax(20rem, 0.85fr) minmax(0, 1.15fr);
+    align-items: stretch;
+    gap: 1.875rem;
+  }
+
+  .how__controls {
+    display: flex;
+    padding-right: 1.875rem;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+
+  .how__step-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  .how__step {
+    display: flex;
+    padding: 0 0 0 1.875rem;
+    flex-direction: column;
+    align-items: flex-start;
+    color: #000000;
+    text-align: left;
+    background: transparent;
+    border: 0;
+    border-left: 4px solid transparent;
+    cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      opacity 180ms ease;
+  }
+
+  .how__step:not(.is-active) {
+    opacity: 0.62;
+  }
+
+  .how__step.is-active {
+    border-left-color: var(--color-accent);
+    opacity: 1;
+  }
+
+  .how__step:focus-visible {
+    outline: 3px solid rgb(238 43 102 / 30%);
+    outline-offset: 4px;
+  }
+
+  .how__number {
+    font-size: 3rem;
+    font-weight: 700;
+    line-height: 1;
+  }
+
+  .how__title {
+    margin-top: 0.7rem;
+    font-size: clamp(1.5rem, 2.2vw, 2rem);
+    font-weight: 500;
+    line-height: 1.15;
+  }
+
+  .how__description {
+    margin-top: 0.75rem;
+    color: var(--color-text-muted);
+    line-height: 1.55;
+  }
+
+  .how__desktop-actions {
+    margin: 2.25rem 0 0 1.875rem;
+  }
+
+  .how svg {
+    fill: none;
+    stroke: currentColor;
+    stroke-linecap: round;
+    stroke-linejoin: round;
+    stroke-width: 1.5;
+  }
+
+  .how__stage {
+    position: relative;
+    min-height: 38rem;
+  }
+
+  .how__panel {
+    height: 100%;
+    animation: panel-in 420ms ease;
+  }
+
+  .how__panel[hidden] {
+    display: none;
+  }
+
+  .how__panel img {
+    width: 100%;
+    height: 100%;
+    min-height: 38rem;
+    object-fit: cover;
+    border-radius: var(--radius-lg);
+  }
+
+  .how__mobile-copy,
+  .how__mobile-actions,
+  .how__dots {
+    display: none;
+  }
+
+  @keyframes panel-in {
+    from { opacity: 0; }
+    to { opacity: 1; }
+  }
+
+  @media (max-width: 900px) {
+    .how__layout {
+      display: block;
+    }
+
+    .how__controls {
+      display: none;
+    }
+
+    .how__stage {
+      min-height: 0;
+      overflow: hidden;
+      background: #ffffff;
+      border: 1px solid rgb(0 0 0 / 8%);
+      border-radius: var(--radius-lg);
+      box-shadow: 0 3px 13px rgb(0 0 0 / 6%);
+    }
+
+    .how__panel img {
+      min-height: 0;
+      aspect-ratio: 16 / 10;
+      border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+    }
+
+    .how__mobile-copy {
+      display: block;
+      padding: 1.25rem;
+    }
+
+    .how__mobile-copy h3 {
+      margin-top: 0.6rem;
+      font-size: 1.75rem;
+      font-weight: 500;
+      line-height: 1.15;
+    }
+
+    .how__mobile-copy p {
+      margin-top: 0.65rem;
+      color: var(--color-text-muted);
+    }
+
+    .how__dots {
+      display: flex;
+      padding: 1rem;
+      justify-content: center;
+      gap: 0.55rem;
+    }
+
+    .how__dot {
+      width: 0.55rem;
+      height: 0.55rem;
+      padding: 0;
+      background: #d1d1d1;
+      border: 0;
+      border-radius: 50%;
+      cursor: pointer;
+    }
+
+    .how__dot.is-active {
+      background: var(--color-accent);
+    }
+
+    .how__mobile-actions {
+      display: flex;
+      margin-top: 1.25rem;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .how__panel {
+      animation: none;
+    }
+  }
+</style>

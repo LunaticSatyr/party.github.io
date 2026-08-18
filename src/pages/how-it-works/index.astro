@@ -1,0 +1,22 @@
+---
+import BrandMarquee from "../../components/BrandMarquee.astro";
+import ClosingCta from "../../components/ClosingCta.astro";
+import HowItWorks from "../../components/HowItWorks.astro";
+import StatsBand from "../../components/StatsBand.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const steps = [
+  { number: "01", title: "Set the Scene", description: "Describe the role, set dates, location, and budget. Your listing goes live instantly and reaches thousands of qualified staff.", image: "/images/how-it-works/hero.jpg", alt: "Friends relaxing beside a pool at a private event" },
+  { number: "02", title: "Pick your crew", description: "Browse verified profiles, watch video intros, check ratings, and shortlist your favourites. Message candidates directly through the platform.", image: "/images/how-it-works/hero.jpg", alt: "Friends relaxing beside a pool at a private event" },
+  { number: "03", title: "Let the Night Play Out", description: "Confirm bookings, track attendance with GPS check-in, and process payments securely. Rate staff after each event to help the community.", image: "/images/how-it-works/hero.jpg", alt: "Friends relaxing beside a pool at a private event" },
+] as const;
+---
+
+<BaseLayout title="How PartiStaff Works | Book Talent & Experiences" description="See how PartiStaff makes finding event work or booking trusted staff simple, fast, and secure.">
+  <main>
+    <HowItWorks steps={steps} />
+    <StatsBand />
+    <ClosingCta image="/images/how-it-works/cta.jpg" alt="PartiStaff talent at a private outdoor event" reverse compact />
+    <BrandMarquee />
+  </main>
+</BaseLayout>

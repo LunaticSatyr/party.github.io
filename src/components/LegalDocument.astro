@@ -1,0 +1,361 @@
+---
+interface Section {
+  id: string;
+  title: string;
+  paragraphs: readonly string[];
+  bullets?: readonly string[];
+}
+
+interface Props {
+  title: string;
+  lastUpdated?: string;
+  introduction: readonly string[];
+  sections: readonly Section[];
+}
+
+const { title, lastUpdated, introduction, sections } = Astro.props;
+---
+
+<main data-legal-document>
+  <header class="legal-hero">
+    <div class="container">
+      <h1>{title}</h1>
+      {lastUpdated && <span>Last updated: {lastUpdated}</span>}
+    </div>
+  </header>
+
+  <section class="legal">
+    <div class="container legal__layout">
+      <aside>
+        <span>On this page</span>
+        <nav aria-label={`${title} sections`}>
+          {
+            sections.map((section) => (
+              <a href={`#${section.id}`} data-legal-link>
+                {section.title}
+              </a>
+            ))
+          }
+        </nav>
+      </aside>
+
+      <article class="legal__document">
+        <div class="legal__introduction">
+          {introduction.map((paragraph) => <p>{paragraph}</p>)}
+        </div>
+
+        {
+          sections.map((section) => (
+            <section id={section.id}>
+              <h2>{section.title}</h2>
+              {section.paragraphs.map((paragraph) => (
+                <p>{paragraph}</p>
+              ))}
+              {section.bullets && (
+                <ul>
+                  {section.bullets.map((bullet) => (
+                    <li>{bullet}</li>
+                  ))}
+                </ul>
+              )}
+            </section>
+          ))
+        }
+
+        <div class="legal__contact">
+          <h2>Questions about this document?</h2>
+          <p>Contact PartiStaff and our team will help with your enquiry.</p>
+          <a class="button button--primary" href="/contact-us">Contact Us</a>
+        </div>
+      </article>
+    </div>
+  </section>
+</main>
+
+<script>
+  document.querySelectorAll<HTMLElement>("[data-legal-document]").forEach((documentRoot) => {
+    const links = Array.from(documentRoot.querySelectorAll<HTMLAnchorElement>("[data-legal-link]"));
+    const sections = links
+      .map((link) => documentRoot.querySelector<HTMLElement>(link.hash))
+      .filter((section): section is HTMLElement => section !== null);
+    const scrollContainer = documentRoot.closest<HTMLElement>(".app-layout-content");
+    const navigationAside = documentRoot.querySelector<HTMLElement>("aside");
+    const mobileLayout = window.matchMedia("(max-width: 850px)");
+    const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
+
+    function scrollToSection(section: HTMLElement, smooth = true) {
+      const heading = section.querySelector<HTMLElement>("h2") ?? section;
+
+      if (!scrollContainer) {
+        heading.scrollIntoView({
+          behavior: smooth && !reducedMotion.matches ? "smooth" : "auto",
+          block: "start",
+        });
+        return;
+      }
+
+      const containerRect = scrollContainer.getBoundingClientRect();
+      const headingRect = heading.getBoundingClientRect();
+      const stickyOffset = mobileLayout.matches ? (navigationAside?.offsetHeight ?? 0) : 0;
+      const top = scrollContainer.scrollTop + headingRect.top - containerRect.top - stickyOffset;
+
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+      scrollContainer.scrollTo({
+        top: Math.max(0, top),
+        behavior: smooth && !reducedMotion.matches ? "smooth" : "auto",
+      });
+    }
+
+    function revealLink(link: HTMLAnchorElement) {
+      const navigation = link.closest<HTMLElement>("nav");
+      if (!navigation) return;
+
+      const navigationRect = navigation.getBoundingClientRect();
+      const linkRect = link.getBoundingClientRect();
+      let left = 0;
+      let top = 0;
+
+      if (linkRect.left < navigationRect.left) left = linkRect.left - navigationRect.left;
+      else if (linkRect.right > navigationRect.right) left = linkRect.right - navigationRect.right;
+
+      if (linkRect.top < navigationRect.top) top = linkRect.top - navigationRect.top;
+      else if (linkRect.bottom > navigationRect.bottom) top = linkRect.bottom - navigationRect.bottom;
+
+      if (left || top) {
+        navigation.scrollBy({
+          left,
+          top,
+          behavior: reducedMotion.matches ? "auto" : "smooth",
+        });
+      }
+    }
+
+    function setActive(id: string) {
+      links.forEach((link) => {
+        const active = link.hash === `#${id}`;
+        const newlyActive = active && !link.classList.contains("is-active");
+        link.classList.toggle("is-active", active);
+        if (active) {
+          link.setAttribute("aria-current", "location");
+          if (newlyActive) revealLink(link);
+        } else link.removeAttribute("aria-current");
+      });
+    }
+
+    links.forEach((link) => {
+      link.addEventListener("click", (event) => {
+        const target = documentRoot.querySelector<HTMLElement>(link.hash);
+        if (!target) return;
+        event.preventDefault();
+        setActive(target.id);
+        scrollToSection(target);
+        history.pushState(null, "", link.hash);
+      });
+    });
+
+    const observer = new IntersectionObserver(
+      (entries) => {
+        const visible = entries
+          .filter((entry) => entry.isIntersecting)
+          .sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
+        const current = visible[0]?.target as HTMLElement | undefined;
+        if (current) setActive(current.id);
+      },
+      { root: scrollContainer, rootMargin: "-16% 0px -68% 0px", threshold: 0 },
+    );
+
+    sections.forEach((section) => observer.observe(section));
+    const initialId = location.hash.slice(1) || sections[0]?.id || "";
+    setActive(initialId);
+
+    const initialSection = sections.find((section) => section.id === location.hash.slice(1));
+    if (initialSection) requestAnimationFrame(() => scrollToSection(initialSection, false));
+  });
+</script>
+
+<style>
+  .legal-hero {
+    position: relative;
+    display: grid;
+    min-height: clamp(18rem, 30vw, 25rem);
+    overflow: hidden;
+    place-items: center;
+    color: #000000;
+    text-align: center;
+    background: #ffffff;
+  }
+
+  .legal-hero::before {
+    position: absolute;
+    inset: 0;
+    background: url("/brand/pattern.png") center / 28rem auto;
+    filter: invert(1);
+    opacity: 0.035;
+    content: "";
+    pointer-events: none;
+  }
+
+  .legal-hero .container {
+    position: relative;
+    padding-block: 4rem;
+  }
+
+  .legal-hero h1 {
+    max-width: 58rem;
+    margin-inline: auto;
+    font-family: var(--font-cursive);
+    font-size: clamp(4.25rem, 7.5vw, 6.75rem);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  .legal-hero span {
+    display: block;
+    margin-top: 1.25rem;
+    color: var(--color-text-muted);
+    font-size: 0.85rem;
+  }
+
+  .legal {
+    padding-block: var(--space-section);
+    background: #ffffff;
+  }
+
+  .legal__layout {
+    display: grid;
+    grid-template-columns: 14rem minmax(0, 1fr);
+    gap: clamp(2.5rem, 7vw, 7rem);
+  }
+
+  aside {
+    position: sticky;
+    top: 1rem;
+    min-width: 0;
+    align-self: start;
+  }
+
+  aside > span {
+    display: block;
+    padding-bottom: 0.8rem;
+    color: var(--color-text-soft);
+    font-size: 0.72rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  aside nav {
+    display: grid;
+    min-width: 0;
+    margin-top: 0.6rem;
+  }
+
+  aside a {
+    position: relative;
+    padding-block: 0.45rem;
+    color: var(--color-text-muted);
+    font-size: 0.78rem;
+    transition: color 160ms ease;
+  }
+
+  aside a:hover,
+  aside a.is-active {
+    color: var(--color-accent);
+  }
+
+  aside a.is-active {
+    font-weight: 700;
+  }
+
+  .legal__document {
+    min-width: 0;
+  }
+
+  .legal__introduction {
+    padding-bottom: 2rem;
+    border-bottom: 1px solid var(--color-border);
+  }
+
+  .legal__introduction p:first-child {
+    color: var(--color-text);
+    font-size: clamp(1.15rem, 2vw, 1.4rem);
+    font-weight: 500;
+  }
+
+  .legal__document section {
+    padding-top: 2.75rem;
+    scroll-margin-top: 0;
+  }
+
+  .legal__document h2 {
+    margin-bottom: 1rem;
+    font-size: clamp(1.45rem, 2.5vw, 2rem);
+    font-weight: 600;
+    scroll-margin-top: 0;
+  }
+
+  .legal__document p,
+  .legal__document li {
+    color: var(--color-text-muted);
+    line-height: 1.75;
+  }
+
+  .legal__document p + p {
+    margin-top: 0.9rem;
+  }
+
+  .legal__document ul {
+    display: grid;
+    padding-left: 1.25rem;
+    margin-block: 1rem 0;
+    gap: 0.5rem;
+  }
+
+  .legal__contact {
+    padding: 2rem;
+    margin-top: 3.5rem;
+    background: #f7f7f7;
+    border-left: 3px solid var(--color-accent);
+  }
+
+  .legal__contact h2 {
+    margin-bottom: 0.45rem;
+  }
+
+  .legal__contact .button {
+    margin-top: 1.25rem;
+  }
+
+  @media (max-width: 850px) {
+    .legal__layout {
+      grid-template-columns: 1fr;
+    }
+
+    aside {
+      background-color: var(--color-background);
+      top: 0;
+      padding-top: 0.5rem;
+    }
+
+    aside nav {
+      display: flex;
+      width: 100%;
+      max-width: 100%;
+      padding-bottom: 0.5rem;
+      gap: 1rem;
+      overflow-x: auto;
+      white-space: nowrap;
+    }
+
+  }
+
+  @media (max-width: 600px) {
+    .legal-hero h1 {
+      font-size: 4.5rem;
+    }
+
+    .legal__contact {
+      padding: 1.4rem;
+    }
+  }
+</style>

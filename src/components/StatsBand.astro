@@ -1,0 +1,31 @@
+---
+const stats = [
+  { value: "37,000+", label: "People Who Know How to Show Up", icon: "/images/how-it-works/people.svg" },
+  { value: "15,000", label: "Events Delivered", icon: "/images/how-it-works/events.svg" },
+  { value: "4", label: "Party Destinations", icon: "/images/how-it-works/locations.svg" },
+] as const;
+---
+
+<section class="stats" aria-label="PartiStaff in numbers">
+  <div class="container stats__grid">
+    {stats.map((stat) => (
+      <article class="stats__item">
+        <img src={stat.icon} alt="" loading="lazy" />
+        <div class="stats__copy"><strong>{stat.value}</strong><span>{stat.label}</span></div>
+      </article>
+    ))}
+  </div>
+</section>
+
+<style>
+  .stats { position: relative; padding-block: var(--space-section); overflow: hidden; background: #fff; }
+  .stats::before { position: absolute; inset: 0; background: url("/brand/pattern.png") center / 26rem auto; filter: invert(1); opacity: 0.035; content: ""; pointer-events: none; }
+  .stats__grid { position: relative; display: grid; grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 1rem; }
+  .stats__item { position: relative; display: flex; min-height: 16.75rem; padding: 2rem; overflow: hidden; flex-direction: column; justify-content: space-between; color: #fff; background: #000; border-radius: var(--radius-md); }
+  .stats__item::before { position: absolute; inset: 0; background: url("/brand/pattern.png") center / 17rem auto; opacity: 0.14; content: ""; pointer-events: none; }
+  .stats__item img { position: relative; width: 4.25rem; height: 4.25rem; object-fit: contain; }
+  .stats__copy { position: relative; display: grid; gap: 0.4rem; }
+  .stats__copy strong { font-size: clamp(3.25rem, 5vw, 5rem); font-weight: 600; line-height: 0.95; }
+  .stats__copy span { color: rgb(255 255 255 / 64%); font-size: 0.95rem; font-weight: 500; }
+  @media (max-width: 760px) { .stats__grid { grid-template-columns: 1fr; } .stats__item { min-height: 14rem; } }
+</style>

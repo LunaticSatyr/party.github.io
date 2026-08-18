@@ -1,0 +1,133 @@
+---
+import BrandMarquee from "../../components/BrandMarquee.astro";
+import PageHero from "../../components/PageHero.astro";
+import FaqSections from "../../features/faqs/FaqSections.astro";
+import BaseLayout from "../../layouts/BaseLayout.astro";
+
+const groups = [
+  {
+    id: "australia",
+    label: "Australia",
+    items: [
+      {
+        question: "What is PartiStaff?",
+        paragraphs: [
+          "PartiStaff is Australia's leading event staffing and social experiences marketplace.",
+          "We connect clients with vetted models, hosts, bartenders, promotional staff, and entertainers for private events, hospitality venues, corporate functions, and curated social experiences.",
+        ],
+      },
+      {
+        question: "How does PartiStaff work?",
+        paragraphs: [
+          "Clients create an event and receive applications from available talent. Talent create profiles, browse opportunities, and apply for jobs that suit their availability and interests.",
+          "PartiStaff provides the technology, community, and marketplace that connects both sides.",
+        ],
+      },
+      {
+        question: "Is PartiStaff an agency?",
+        paragraphs: [
+          "No. PartiStaff is a marketplace. Unlike traditional agencies, talent manage their own profiles, availability, and opportunities through the platform.",
+        ],
+      },
+      {
+        question: "How is PartiStaff different from traditional agencies?",
+        paragraphs: [
+          "Traditional agencies often charge higher hourly rates and take commissions from talent earnings. PartiStaff uses a membership model that lets talent keep 100% of what they earn while giving clients transparent pricing and a wider choice of talent.",
+        ],
+      },
+      {
+        question: "How much does it cost to hire through PartiStaff?",
+        paragraphs: [
+          "An Event Pass is $99 per event. Pro Membership is $595 per quarter and includes up to 10 events. Enterprise Membership is $1,495 per quarter with unlimited events and premium marketplace access.",
+        ],
+      },
+      {
+        question: "How do I create an event?",
+        paragraphs: ["Provide the essential event details and available talent can apply directly."],
+        bullets: ["Date", "Time", "Location", "Category", "Number of staff required"],
+      },
+      {
+        question: "How much do staff charge?",
+        paragraphs: [
+          "Talent set their own rates. Pricing varies with experience, category, location, and event type.",
+        ],
+      },
+      {
+        question: "Does PartiStaff take a commission from talent?",
+        paragraphs: [
+          "No. PartiStaff does not take commissions from talent earnings, so talent retain 100% of their marketplace income.",
+        ],
+      },
+      {
+        question: "What are Memberships?",
+        paragraphs: [
+          "Memberships provide access to the PartiStaff marketplace and community, including opportunities, connections, Experiences, and broader platform participation.",
+        ],
+      },
+      {
+        question: "What membership options are available for talent?",
+        paragraphs: [
+          "Free Membership supports profiles, networking, and Experiences. Silver unlocks paid opportunities and job applications. Gold adds premium visibility, priority placement, and advanced marketplace features.",
+        ],
+      },
+      {
+        question: "What are Experiences?",
+        paragraphs: [
+          "Experiences are curated social events for the PartiStaff community, designed to help members connect, network, and enjoy unique opportunities.",
+        ],
+        bullets: [
+          "Harbour boat days",
+          "Golf and padel events",
+          "Beach club gatherings",
+          "Winery lunches and social dinners",
+        ],
+      },
+      {
+        question: "Are Experiences paid jobs?",
+        paragraphs: [
+          "No. Experiences are community events. Paid jobs are listed separately in the marketplace.",
+        ],
+      },
+      {
+        question: "Is PartiStaff a dating app or escort service?",
+        paragraphs: [
+          "No. PartiStaff is a professional event staffing and social experiences marketplace. It does not facilitate escorting, companionship, or intimate services.",
+        ],
+      },
+      {
+        question: "How are members verified?",
+        paragraphs: [
+          "Members undergo identity and profile verification before accessing marketplace opportunities. Additional requirements can apply by membership level and category.",
+        ],
+      },
+      {
+        question: "Can I cancel my membership?",
+        paragraphs: [
+          "Yes. Memberships can be managed and cancelled in account settings. Active benefits remain until the end of the current billing period.",
+        ],
+      },
+      {
+        question: "Why does PartiStaff use a membership model?",
+        paragraphs: [
+          "Membership funds more opportunities, better technology, platform safety, community Experiences, member support, and talent growth while allowing talent to retain their earnings.",
+        ],
+      },
+    ],
+  },
+] as const;
+---
+
+<BaseLayout
+  title="PartiStaff FAQs | Booking Talent & Events"
+  description="Answers about booking talent, memberships, events, verification, and PartiStaff services in Australia."
+>
+  <main>
+    <PageHero
+      title="Frequently Asked Questions"
+      description="Everything clients and talent need to know about the PartiStaff marketplace."
+      compact
+    />
+    <FaqSections groups={groups} />
+    <BrandMarquee />
+  </main>
+</BaseLayout>
