@@ -144,7 +144,7 @@ const initialMessage = encodeURIComponent("Hi PartiStaff, I have an enquiry.");
         `Enquiry: ${subject}`,
         "",
         "Message:",
-        value(data, "message") || "No additional message provided.",
+        value(data, "message"),
       ];
 
       return {
