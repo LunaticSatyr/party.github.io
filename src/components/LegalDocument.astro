@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../utils/paths";
+
 interface Section {
   id: string;
   title: string;
@@ -65,7 +67,7 @@ const { title, lastUpdated, introduction, sections } = Astro.props;
         <div class="legal__contact">
           <h2>Questions about this document?</h2>
           <p>Contact PartiStaff and our team will help with your enquiry.</p>
-          <a class="button button--primary" href="/contact-us">Contact Us</a>
+          <a class="button button--primary" href={withBase("/contact-us")}>Contact Us</a>
         </div>
       </article>
     </div>

@@ -1,5 +1,6 @@
 ---
 import type { HTMLAttributes } from "astro/types";
+import { withBase } from "../utils/paths";
 
 interface Props extends HTMLAttributes<"header"> {}
 
@@ -15,7 +16,7 @@ const submenuItems = [
 const normalizePath = (path: string) => path.replace(/\/+$/, "") || "/";
 const currentPath = normalizePath(Astro.url.pathname);
 const isCurrentItem = (href: string) =>
-  !href.startsWith("/#") && normalizePath(new URL(href, Astro.url).pathname) === currentPath;
+  !href.startsWith("/#") && normalizePath(new URL(withBase(href), Astro.url).pathname) === currentPath;
 const dropdownIsCurrent = submenuItems.some((item) => isCurrentItem(item.href));
 const { class: className, ...rest } = Astro.props;
 ---
@@ -41,7 +42,7 @@ const { class: className, ...rest } = Astro.props;
               submenuItems.map((item) => (
                 <a
                   class:list={{ "is-current": isCurrentItem(item.href) }}
-                  href={item.href}
+                  href={withBase(item.href)}
                   aria-current={isCurrentItem(item.href) ? "page" : undefined}
                 >
                   {item.label}
@@ -50,22 +51,22 @@ const { class: className, ...rest } = Astro.props;
             }
           </div>
         </li>
-        <li><a class="site-header__nav-link" href="/#services">Talent</a></li>
-        <li><a class="site-header__nav-link" href="/#services">Villas</a></li>
-        <li><a class="site-header__nav-link" href="/contact-us">Contact</a></li>
+        <li><a class="site-header__nav-link" href={withBase("/#services")}>Talent</a></li>
+        <li><a class="site-header__nav-link" href={withBase("/#services")}>Villas</a></li>
+        <li><a class="site-header__nav-link" href={withBase("/contact-us")}>Contact</a></li>
         <li class="site-header__mobile-login">
-          <a class="site-header__nav-link" href="/contact-us">Login</a>
+          <a class="site-header__nav-link" href={withBase("/contact-us")}>Login</a>
         </li>
       </ul>
     </nav>
 
-    <a class="site-header__logo" href="/" aria-label="PartiStaff home">
-      <img src="/brand/header-logo.svg" width="166" height="55" alt="PartiStaff" />
+    <a class="site-header__logo" href={withBase("/")} aria-label="PartiStaff home">
+      <img src={withBase("/brand/header-logo.svg")} width="166" height="55" alt="PartiStaff" />
     </a>
 
     <div class="site-header__actions">
-      <a class="site-header__login" href="/contact-us">Login</a>
-      <a class="button button--primary site-header__cta" href="/contact-us">Get Started</a>
+      <a class="site-header__login" href={withBase("/contact-us")}>Login</a>
+      <a class="button button--primary site-header__cta" href={withBase("/contact-us")}>Get Started</a>
       <button
         class="site-header__menu-button"
         type="button"

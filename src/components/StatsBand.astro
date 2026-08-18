@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../utils/paths";
+
 const stats = [
   { value: "37,000+", label: "People Who Know How to Show Up", icon: "/images/how-it-works/people.svg" },
   { value: "15,000", label: "Events Delivered", icon: "/images/how-it-works/events.svg" },
@@ -10,7 +12,7 @@ const stats = [
   <div class="container stats__grid">
     {stats.map((stat) => (
       <article class="stats__item">
-        <img src={stat.icon} alt="" loading="lazy" />
+        <img src={withBase(stat.icon)} alt="" loading="lazy" />
         <div class="stats__copy"><strong>{stat.value}</strong><span>{stat.label}</span></div>
       </article>
     ))}
