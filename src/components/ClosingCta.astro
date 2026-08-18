@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../utils/paths";
+
 interface Props {
   image: string;
   alt: string;
@@ -36,15 +38,15 @@ const {
       <p>{description}</p>
       <ul>{items.map((item) => <li>{item}</li>)}</ul>
       <div class="button-row button-row--stack-mobile">
-        <a class="button button--primary" href="/contact-us">
+        <a class="button button--primary" href={withBase("/contact-us")}>
           {primaryLabel}
           <svg class="button__icon" viewBox="0 0 20 20" aria-hidden="true"><path d="m12 5 5 5-5 5M3 10h14"></path></svg>
         </a>
-        <a class="button button--light" href="/#services">{secondaryLabel}</a>
+        <a class="button button--light" href={withBase("/#services")}>{secondaryLabel}</a>
       </div>
     </div>
   </div>
-  <div class="closing-cta__image"><img src={image} alt={alt} loading="lazy" /></div>
+  <div class="closing-cta__image"><img src={withBase(image)} alt={alt} loading="lazy" /></div>
 </section>
 
 <style>

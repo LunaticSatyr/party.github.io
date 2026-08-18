@@ -3,6 +3,7 @@ import BrandMarquee from "../../components/BrandMarquee.astro";
 import ClosingCta from "../../components/ClosingCta.astro";
 import StatsBand from "../../components/StatsBand.astro";
 import BaseLayout from "../../layouts/BaseLayout.astro";
+import { withBase } from "../../utils/paths";
 
 const team = [
   { name: "Alex Carter", role: "CEO & Founder", image: "/images/events/event-01.jpg" },
@@ -25,7 +26,7 @@ const team = [
           <p>We specialise in providing high-quality social talent for private events, luxury experiences, brand activations, hospitality functions, yachts, villas, nightlife, and exclusive celebrations. From polished event hosts and charismatic party staff to promotional talent and lifestyle companions for social occasions, PartiStaff was built to elevate the energy, atmosphere, and experience of every event.</p>
         </header>
 
-        <img class="about__hero-image" src="/images/about/hero.jpg" alt="PartiStaff talent enjoying a private poolside event" />
+        <img class="about__hero-image" src={withBase("/images/about/hero.jpg")} alt="PartiStaff talent enjoying a private poolside event" />
 
         <div class="about__details">
           <div class="about__copy">
@@ -60,14 +61,14 @@ const team = [
               <p>Welcome to PartiStaff.</p>
             </section>
           </div>
-          <div class="about__collage"><img src="/images/about/collage.png" alt="A collage of PartiStaff event experiences" loading="lazy" /></div>
+          <div class="about__collage"><img src={withBase("/images/about/collage.png")} alt="A collage of PartiStaff event experiences" loading="lazy" /></div>
         </div>
 
         <div class="about__purpose">
-          <article style="--purpose-image: url('/images/about/mission.jpeg')">
+          <article style={`--purpose-image: url('${withBase("/images/about/mission.jpeg")}')`}>
             <div><h2>Our Mission</h2><p>To empower hospitality professionals to build thriving careers across the world's most exciting destinations, while giving event organisers and venues instant access to a trusted network of verified talent.</p></div>
           </article>
-          <article style="--purpose-image: url('/images/about/vision.jpeg')">
+          <article style={`--purpose-image: url('${withBase("/images/about/vision.jpeg")}')`}>
             <div><h2>Our Vision</h2><p>A world where every hospitality professional can work anywhere, and every venue can staff any event at the tap of a button. We are making the global hospitality workforce truly mobile.</p></div>
           </article>
         </div>
@@ -82,7 +83,7 @@ const team = [
         <div class="about__team-grid">
           {team.map((member) => (
             <article class="about__member">
-              <img src={member.image} alt={member.name} loading="lazy" />
+              <img src={withBase(member.image)} alt={member.name} loading="lazy" />
               <div><h3>{member.name}</h3><p>{member.role}</p></div>
             </article>
           ))}

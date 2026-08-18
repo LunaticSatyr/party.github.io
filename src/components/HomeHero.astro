@@ -1,5 +1,6 @@
 ---
 import StackedCarousel from "./StackedCarousel.astro";
+import { withBase } from "../utils/paths";
 
 interface CarouselItem {
   src: string;
@@ -17,7 +18,7 @@ const { items } = Astro.props;
   <div class="container home-hero__container">
     <h1 class="sr-only">PartiStaff event talent and private party experiences</h1>
     <div class="home-hero__wordmark">
-      <img src="/brand/wordmark-white.svg" alt="PartiStaff" />
+      <img src={withBase("/brand/wordmark-white.svg")} alt="PartiStaff" />
     </div>
 
     <div class="home-hero__body">
@@ -51,7 +52,7 @@ const { items } = Astro.props;
         </svg>
 
         <div class="button-row button-row--stack-mobile home-hero__actions">
-          <a class="button button--primary" href="/contact-us">
+          <a class="button button--primary" href={withBase("/contact-us")}>
             Create Your Event
             <svg class="button__icon" viewBox="0 0 20 20" aria-hidden="true">
               <path d="m12 5 5 5-5 5M3 10h14"></path>

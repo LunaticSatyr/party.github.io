@@ -1,4 +1,6 @@
 ---
+import { withBase } from "../utils/paths";
+
 interface Location {
   name: string;
   images: readonly { src: string; alt: string }[];
@@ -51,7 +53,7 @@ const { locations } = Astro.props;
         <div class="locations__photos scroll-container">
           {location.images.map((image) => (
             <figure>
-              <img src={image.src} alt={image.alt} loading="lazy" />
+              <img src={withBase(image.src)} alt={image.alt} loading="lazy" />
             </figure>
           ))}
         </div>
